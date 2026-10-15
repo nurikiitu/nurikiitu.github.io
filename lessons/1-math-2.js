@@ -2,6 +2,14 @@
 (function(){
 const SG=v=>({'>':'&gt;','<':'&lt;','=':'=','≠':'≠'}[v]||v);
 const cmp=(a,b)=>a>b?'>':a<b?'<':'=';
+/* үлкен себет: заттар ішінде жатады */
+function basket(n,e){const cap=[4,3,2],pos=[];let left=n;cap.forEach((c,row)=>{const k=Math.min(c,left);left-=k;for(let i=0;i<k;i++)pos.push([210+(i-(k-1)/2)*76+rnd(-3,3),178-row*60,rnd(-12,12)])});
+ const items=pos.map(([x,y,r])=>`<span style="position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotate(${r}deg);font-size:60px;line-height:1">${e}</span>`).join('');
+ const weave=[...Array(6)].map((_,i)=>`<path d="M${40+i*0} ${222+i*22} H${380-i*0}" stroke="#b97a2e" stroke-width="3" opacity=".55"/>`).join('')+[...Array(11)].map((_,i)=>`<path d="M${52+i*31} 214 L${80+i*26} 350" stroke="#b97a2e" stroke-width="3" opacity=".45"/>`).join('');
+ return `<div style="position:relative;width:420px;height:370px">
+ <svg width="420" height="370" style="position:absolute;inset:0"><path d="M70 205 Q210 -40 350 205" fill="none" stroke="#c98a3c" stroke-width="16" stroke-linecap="round"/><path d="M70 205 Q210 -40 350 205" fill="none" stroke="#e7b06a" stroke-width="6" stroke-linecap="round"/><ellipse cx="210" cy="212" rx="175" ry="30" fill="#7a4b1c"/></svg>
+ ${items}
+ <svg width="420" height="370" style="position:absolute;inset:0"><path d="M30 212 Q210 250 390 212 L355 350 Q210 372 65 350 Z" fill="#e2a65a"/>${weave}<path d="M30 212 Q210 250 390 212" fill="none" stroke="#c98a3c" stroke-width="14" stroke-linecap="round"/><path d="M65 350 Q210 372 355 350" fill="none" stroke="#b97a2e" stroke-width="8" stroke-linecap="round"/></svg></div>`}
 const grp=(e,n,fs=44,w=300)=>`<div class="grp" style="width:${w}px;min-height:${fs*2+30}px;font-size:${fs}px">${e.repeat(n)}</div>`;
 
 LESSON({
@@ -85,9 +93,9 @@ extra:[
  const R=[0,1,2,3].map(i=>({mx:i%2===0,n:pick([3,4,5,6,7,8,9],3),e:['🍓','🥕','🍊','🍪'][i]}));R.forEach(()=>st.append(el('i')));let k=0;
  const show=()=>{[...st.children].forEach((x,j)=>x.className=j<k?'d':j===k?'c':'');const r=R[k];q.innerHTML=r.mx?'Қай себетте <span style="color:#22b07d">ЕҢ КӨП</span>?':'Қай себетте <span style="color:#ef5350">ЕҢ АЗ</span>?';row.innerHTML='';
   const want=r.mx?Math.max(...r.n):Math.min(...r.n);
-  r.n.forEach(n=>{const c=el('button','',`<div class="grp" style="width:380px;height:300px;font-size:52px;border:none;background:transparent">${shuffle([...Array(n)].map(()=>r.e)).join('')}</div><div style="font-size:60px">🧺</div>`);
-   c.style.cssText='background:#fff8ef;border:4px solid #f1d7b5;border-radius:26px;padding:10px';c.dataset.n=n;c.onclick=()=>{if(c.dataset.l)return;
-    if(n===want){T.ok(c);[...row.children].forEach(x=>{x.dataset.l=1;x.insertAdjacentHTML('beforeend',`<div style="font-size:40px;font-weight:900">${x.dataset.n}</div>`)});T.later(()=>{k++;k<R.length?show():([...st.children].forEach(x=>x.className='d'),T.done())},1800)}else T.bad(c)};row.append(c)})};
+  r.n.forEach(n=>{const c=el('button','',basket(n,r.e));
+   c.style.cssText='background:transparent;border-radius:30px;padding:6px 10px';c.dataset.n=n;c.onclick=()=>{if(c.dataset.l)return;
+    if(n===want){T.ok(c);[...row.children].forEach(x=>{x.dataset.l=1;x.insertAdjacentHTML('beforeend',`<div style="font-size:46px;font-weight:900;margin-top:-6px">${x.dataset.n}</div>`)});T.later(()=>{k++;k<R.length?show():([...st.children].forEach(x=>x.className='d'),T.done())},1800)}else T.bad(c)};row.append(c)})};
  T.reveal=()=>{const r=R[k];if(!r)return;const want=r.mx?Math.max(...r.n):Math.min(...r.n);[...row.children].forEach(c=>{if(+c.dataset.n===want)c.classList.add('hint')})};show()}},
 {title:'Дұрыс па, қате ме? Нүктелерді санап, тексер.',build(b,T){
  b.style.flexDirection='column';b.style.alignItems='center';
