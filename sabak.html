@@ -31,7 +31,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 #board{position:absolute;inset:0;z-index:15;display:none;background:#fff}
 #board.on{display:block}
 #board.on~.bpan{display:flex}
-.bpan{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:25;display:none;align-items:center;gap:8px;background:#fff;border-radius:20px;padding:8px 12px;box-shadow:0 8px 30px #0003;white-space:nowrap}
+.bpan{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:25;display:none;align-items:center;gap:8px;background:#fff;border-radius:20px;padding:8px 12px;box-shadow:0 8px 30px #0003;white-space:nowrap;flex-wrap:wrap;justify-content:center;max-width:96%}
 .bl{font-weight:900;font-size:18px;margin-right:2px}
 .bc{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #cfd5e2;position:relative;display:grid;place-items:center;font-size:20px;cursor:pointer;flex:none}
 .bc.on{box-shadow:0 0 0 3px #5b4bdb}
