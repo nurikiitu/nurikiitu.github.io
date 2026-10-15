@@ -395,10 +395,11 @@ addEventListener('resize',()=>{if(BD.classList.contains('on'))bsize()});
 
 /* ====== жүктеу ====== */
 fit();
+const kit=document.createElement('script');kit.src='lessons/kit.js?v=10';kit.onload=()=>document.body.append(sc);document.body.append(kit);
 const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=10`;
 sc.onerror=()=>{$('#stage').innerHTML=`<div class="intro"><div class="no">${N}</div><h1>${LES?LES.t:''}</h1><div style="font-size:90px">🛠️</div><div class="big mut">Сабақ дайындалуда</div></div>`;
  document.querySelector('.bot').style.display='none';$('#main').style.bottom='0';fit()};
-document.body.append(sc);
+
 </script>
 </body>
 </html>
