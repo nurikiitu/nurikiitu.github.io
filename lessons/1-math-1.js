@@ -40,10 +40,10 @@ book:[
 /* 2 */
 {num:2,title:'Нүктелер мен саусақтар қандай сандарды көрсетіп тұр? Осы сандардың жазылуын карточкалардан көрсет. Сандарды тура және кері ретпен ата.',build(b,T){
  b.style.flexDirection='column';b.style.alignItems='center';
- const grid=el('div','');grid.style.cssText='display:grid;grid-template-columns:repeat(5,1fr);gap:16px;width:100%';b.append(grid);
+ const grid=el('div','');grid.style.cssText='display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;width:100%';b.append(grid);
  let sel=null,left=10;const cells=[];
- for(let n=1;n<=10;n++){const c=el('button','',`${dots(n,96)}<div style="display:flex">${hand(n,92)}</div><div class="slot" style="width:70px;height:70px;font-size:40px"></div>`);
-  c.style.cssText='display:flex;align-items:center;justify-content:center;gap:8px;background:#fff8ef;border:3px solid #f1d7b5;border-radius:18px;padding:12px 10px';c.dataset.n=n;
+ for(let n=1;n<=10;n++){const c=el('button','',`<div style="display:flex;align-items:center;gap:14px">${dots(n,80)}<div class="slot" style="width:66px;height:66px;font-size:38px"></div></div><div style="display:flex;justify-content:center;height:74px">${hand(n,74)}</div>`);
+  c.style.cssText='min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#fff8ef;border:3px solid #f1d7b5;border-radius:18px;padding:10px 6px';c.dataset.n=n;
   c.onclick=()=>{if(c.dataset.ok)return;cells.forEach(x=>x.style.outline='');sel=c;c.style.outline='5px solid #ffc531';beep('tap')};grid.append(c);cells.push(c)}
  const info=el('div','mut','Алдымен карточканы бас, сосын санды таңда 👇');info.style.fontSize='22px';b.append(info);
  const fill=(c)=>{const sl=c.querySelector('.slot');sl.textContent=c.dataset.n;sl.classList.add('f');c.dataset.ok=1;c.style.outline=''};

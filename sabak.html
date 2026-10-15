@@ -150,7 +150,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
  <button class="ans" id="ans">👁 Жауабы</button>
  <button class="nav nx" id="next"><span>Келесі</span> ›</button>
 </div>
-<script src="data.js?v=6"></script>
+<script src="data.js?v=7"></script>
 <script>
 /* ====== негізгі көмекшілер ====== */
 const $=s=>document.querySelector(s);
@@ -306,7 +306,7 @@ T.pen=()=>{if(mode!=='pen')setMode('pen')};
 
 /* ====== жүктеу ====== */
 fit();
-const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=6`;
+const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=7`;
 sc.onerror=()=>{$('#stage').innerHTML=`<div class="intro"><div class="no">${N}</div><h1>${LES?LES.t:''}</h1><div style="font-size:90px">🛠️</div><div class="big mut">Сабақ дайындалуда</div></div>`;
  document.querySelector('.bot').style.display='none';$('#main').style.bottom='0';fit()};
 document.body.append(sc);
