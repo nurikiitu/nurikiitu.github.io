@@ -2,6 +2,7 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NeuroUstaz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +71,9 @@ h1{font-size:44px;font-weight:900;letter-spacing:-1px;margin:6px 0 4px}
 .ls .tt{font-size:28px;font-weight:800;line-height:1.2}
 .ls .go{margin-left:auto;font-size:34px;color:#c3c9d8;font-weight:900}
 .ls .soon{margin-left:auto;font-size:15px;font-weight:800;color:var(--mut);background:#f1f3f8;padding:6px 12px;border-radius:999px;white-space:nowrap}
-.ls .soon+.go{margin-left:12px}
+.ls .soon+.go,.ls .ready+.go{margin-left:12px}
+.ls .ready{margin-left:auto;font-size:16px;font-weight:900;color:#fff;background:#22b07d;padding:7px 14px;border-radius:999px;white-space:nowrap}
+.ls.rd{border-color:#bfead6}.ls.rd .num{background:#e3f7ee;color:#1b9e6a}
 .empty{flex:1;display:grid;place-items:center;text-align:center;color:var(--mut);font-size:26px;font-weight:800}
 .empty div{font-size:80px;margin-bottom:10px}
 
@@ -113,7 +116,7 @@ h1{font-size:44px;font-weight:900;letter-spacing:-1px;margin:6px 0 4px}
   </section>
  </main>
 </div>
-<script src="data.js"></script>
+<script src="data.js?v=3"></script>
 <script>
 const $=s=>document.querySelector(s);
 const ST={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
@@ -146,9 +149,9 @@ function render(){
  function list(i){const d=DATA[key]?.q[i-1],box=$('#lessons');box.innerHTML='';box.scrollTop=0;
   $('#qtitle').textContent=d&&d.name?'📘 '+d.name:'';
   if(!d||!d.ls.length){box.innerHTML='<div class="empty"><div><div>🛠️</div>Бұл тоқсанның тақырыптары жақында қосылады</div></div>';return}
-  d.ls.forEach(l=>{const id=key+'/'+l.n,ok=READY.has(id);const b=document.createElement('button');b.className='ls';
-   b.innerHTML=`<div class="num">${l.n}</div><div><div class="lab">${l.lab}</div><div class="tt">${l.t}</div></div>${ok?'':'<span class="soon">Дайындалуда</span>'}<span class="go">›</span>`;
-   b.onclick=()=>{location.href='sabak.html?g='+g+'&s='+sub.id+'&n='+l.n};box.append(b)})}
+  d.ls.forEach(l=>{const id=key+'/'+l.n,ok=READY.has(id);const b=document.createElement('button');b.className='ls'+(ok?' rd':'');
+   b.innerHTML=`<div class="num">${l.n}</div><div><div class="lab">${l.lab}</div><div class="tt">${l.t}</div></div>${ok?'<span class="ready">✓ Дайын</span>':'<span class="soon">Дайындалуда</span>'}<span class="go">›</span>`;
+   b.onclick=()=>{location.href='sabak.html?g='+g+'&s='+sub.id+'&n='+l.n+'&v=3'};box.append(b)})}
  list(q)}
 window.addEventListener('hashchange',render);
 
