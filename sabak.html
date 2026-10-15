@@ -150,7 +150,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
  <button class="ans" id="ans">👁 Жауабы</button>
  <button class="nav nx" id="next"><span>Келесі</span> ›</button>
 </div>
-<script src="data.js?v=4"></script>
+<script src="data.js?v=6"></script>
 <script>
 /* ====== негізгі көмекшілер ====== */
 const $=s=>document.querySelector(s);
@@ -186,6 +186,16 @@ const ICO={
  pcase:`<svg viewBox="0 0 110 50" width="110"><rect x="4" y="8" width="102" height="34" rx="17" fill="#8bc34a"/><rect x="14" y="10" width="82" height="5" rx="2" fill="#689f38"/><circle cx="96" cy="13" r="4" fill="#fbc02d"/></svg>`,
  cube:l=>`<svg viewBox="0 0 60 60" width="60"><rect x="6" y="10" width="42" height="42" rx="6" fill="#ffe08a" stroke="#d9a400" stroke-width="3"/><path d="M6 16 L16 4 H56 L48 14" fill="#ffd25c" stroke="#d9a400" stroke-width="3"/><text x="27" y="42" font-size="28" font-weight="900" text-anchor="middle" fill="#d83a3a" font-family="Nunito">${l}</text></svg>`,
  album:`<svg viewBox="0 0 100 70" width="110"><rect x="3" y="3" width="94" height="64" rx="5" fill="#ffd27a" stroke="#e0a030" stroke-width="3"/><circle cx="25" cy="25" r="9" fill="#ff7043"/><path d="M14 58 L38 34 L56 52 L70 40 L88 58Z" fill="#43a047"/><text x="60" y="24" font-size="11" font-weight="900" fill="#7a4a00" font-family="Nunito">альбом</text></svg>`};
+/* толық денелі бала (SVG) */
+function kid(g,c,hair,hat,armUp,sz=1){const sk='#f6c89f',st='#d9a074';
+ const legs=`<rect x="30" y="104" width="8" height="34" rx="4" fill="${g?sk:'#3d5a98'}"/><rect x="42" y="104" width="8" height="34" rx="4" fill="${g?sk:'#3d5a98'}"/><ellipse cx="33" cy="140" rx="8" ry="5" fill="#5b3a29"/><ellipse cx="47" cy="140" rx="8" ry="5" fill="#5b3a29"/>`;
+ const body=g?`<path d="M26 60 H54 L64 110 H16 Z" fill="${c}"/>`:`<rect x="24" y="60" width="32" height="40" rx="8" fill="${c}"/><rect x="25" y="96" width="30" height="14" rx="3" fill="#3d5a98"/>`;
+ const arms=`<path d="M27 66 L${armUp?14:16} ${armUp?44:96}" stroke="${sk}" stroke-width="8" stroke-linecap="round"/><path d="M53 66 L64 96" stroke="${sk}" stroke-width="8" stroke-linecap="round"/>`;
+ const hairS=g?`<path d="M19 38 Q20 14 40 14 Q60 14 61 38 Q56 24 40 24 Q24 24 19 38Z" fill="${hair}"/><circle cx="16" cy="40" r="7" fill="${hair}"/><circle cx="64" cy="40" r="7" fill="${hair}"/>`
+   :`<path d="M20 34 Q20 14 40 14 Q60 14 60 34 Q52 22 40 24 Q28 22 20 34Z" fill="${hair}"/>`;
+ const hatS=hat?`<path d="M30 20 L40 -6 L50 20Z" fill="${hat}"/><circle cx="40" cy="-6" r="4" fill="#fdd835"/>`:'';
+ return `<svg width="${84*sz}" height="${160*sz}" viewBox="0 -10 80 155">${legs}${arms}${body}<rect x="35" y="52" width="10" height="10" fill="${sk}"/><circle cx="40" cy="38" r="20" fill="${sk}" stroke="${st}" stroke-width="1.5"/>${hairS}${hatS}
+ <circle cx="33" cy="38" r="2.6" fill="#333"/><circle cx="47" cy="38" r="2.6" fill="#333"/><path d="M33 46 Q40 52 47 46" stroke="#b5533c" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="28" cy="45" r="3" fill="#f4a3a3" opacity=".7"/><circle cx="52" cy="45" r="3" fill="#f4a3a3" opacity=".7"/></svg>`}
 function ncard(n,cls=''){const b=el('button','nc '+cls,String(n));b.style.setProperty('--c',NCOL[n]||'#eee');b.dataset.v=n;return b}
 
 /* ====== сабақ қозғалтқышы ====== */
@@ -296,7 +306,7 @@ T.pen=()=>{if(mode!=='pen')setMode('pen')};
 
 /* ====== жүктеу ====== */
 fit();
-const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=4`;
+const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=6`;
 sc.onerror=()=>{$('#stage').innerHTML=`<div class="intro"><div class="no">${N}</div><h1>${LES?LES.t:''}</h1><div style="font-size:90px">🛠️</div><div class="big mut">Сабақ дайындалуда</div></div>`;
  document.querySelector('.bot').style.display='none';$('#main').style.bottom='0';fit()};
 document.body.append(sc);

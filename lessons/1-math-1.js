@@ -13,14 +13,18 @@ book:[
  const flags=['#e53935','#fb8c00','#fdd835','#43a047','#1e88e5','#8e24aa','#e53935','#fb8c00','#43a047','#1e88e5'];
  const items=[
   ...flags.map((c,i)=>({e:`<div style="width:46px;height:52px;background:${c};clip-path:polygon(0 0,100% 0,50% 100%)"></div>`,x:8+i*9.4,y:9+Math.abs(i-4.5)*0.9,t:'flag'})),
-  {e:'🌳',x:5,y:52,s:150,t:'tree'},{e:'🌳',x:95,y:50,s:150,t:'tree'},
-  {e:'🎈',x:15,y:30,s:58},{e:'🎈',x:22,y:24,s:58},{e:'🎈',x:79,y:27,s:58},{e:'🎈',x:86,y:22,s:58},{e:'🎈',x:84,y:36,s:58},
-  {e:'🎂',x:50,y:60,s:110},
-  {e:'👧',x:31,y:52,s:64},{e:'👦',x:26,y:72,s:64},{e:'👦',x:38,y:84,s:64},{e:'👧',x:69,y:50,s:64},{e:'👦',x:74,y:70,s:64},{e:'👧',x:63,y:84,s:64},
-  {e:'🎁',x:9,y:84,s:54},{e:'🎁',x:16,y:90,s:54},{e:'🎁',x:12,y:76,s:46},
-  {e:'🧺',x:89,y:86,s:80},{e:'🍎',x:85,y:74,s:34},{e:'🍎',x:89,y:72,s:34},{e:'🍏',x:93,y:74,s:34},{e:'🍎',x:91,y:78,s:30}];
+  {e:'🌳',x:5,y:40,s:120,t:'tree'},{e:'🌳',x:95,y:38,s:120,t:'tree'},
+  {e:'🎈',x:15,y:26,s:58},{e:'🎈',x:22,y:20,s:58},{e:'🎈',x:79,y:23,s:58},{e:'🎈',x:86,y:18,s:58},{e:'🎈',x:84,y:32,s:58},
+  {e:'🎂',x:50,y:47,s:110},
+  {e:kid(1,'#ec407a','#5d3a1a','#7e57c2',1),x:13,y:64},{e:kid(0,'#42a5f5','#3e2723',0,0),x:22,y:66},{e:kid(1,'#ffb300','#212121','#26a69a',0),x:30,y:64},
+  {e:kid(0,'#66bb6a','#6d4c41','#ef5350',0),x:70,y:64},{e:kid(1,'#ab47bc','#4e342e',0,1),x:78,y:63},{e:kid(0,'#ff7043','#3e2723','#42a5f5',1),x:86,y:61},
+  {e:'🎁',x:9,y:90,s:52},{e:'🎁',x:17,y:91,s:52},{e:'🎁',x:25,y:90,s:46},
+  {e:'🧺',x:90,y:91,s:72},{e:'🍎',x:86,y:83,s:30},{e:'🍎',x:90,y:81,s:30},{e:'🍏',x:94,y:83,s:30},{e:'🍎',x:90,y:86,s:26}];
  const s=T.scene(b,{w:900,h:540,bg:'linear-gradient(#bfe6ff 0 48%,#8fd16a 48%)',items});
- const blanket=el('div','');blanket.style.cssText='position:absolute;left:30%;top:56%;width:40%;height:34%;background:repeating-linear-gradient(45deg,#fff 0 18px,#ffe1e6 18px 36px);border-radius:16px;z-index:0';s.prepend(blanket);
+ s.insertAdjacentHTML('afterbegin',`<svg style="position:absolute;left:29%;top:52%;width:42%;height:34%;z-index:0" viewBox="0 0 380 180" preserveAspectRatio="none">
+  <rect x="40" y="40" width="14" height="130" rx="5" fill="#8d5a2b"/><rect x="326" y="40" width="14" height="130" rx="5" fill="#8d5a2b"/><rect x="95" y="40" width="10" height="110" rx="4" fill="#6d4420"/><rect x="275" y="40" width="10" height="110" rx="4" fill="#6d4420"/>
+  <path d="M20 10 H360 L372 48 H8 Z" fill="#fff"/><path d="M8 48 H372 L366 74 Q190 88 14 74Z" fill="#f8bbd0"/>${[...Array(9)].map((_,i)=>`<circle cx="${30+i*40}" cy="62" r="6" fill="#fff"/>`).join('')}
+  <path d="M20 10 H360 L372 48 H8 Z" fill="none" stroke="#f48fb1" stroke-width="3"/></svg>`);
  const side=el('div','side');b.append(side);
  side.append(el('div','mut','💡 Заттарды басып санауға болады'));
  const rs=el('button','btn alt','↺ Белгілерді өшіру');rs.style.height='48px';rs.style.fontSize='18px';rs.onclick=()=>s.resetCount();side.append(rs);
