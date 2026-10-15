@@ -28,6 +28,20 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .main{position:absolute;top:74px;bottom:78px;left:0;right:0;overflow:hidden}
 .stagew{position:absolute;left:50%;top:50%}
 .stage{width:1500px;height:760px;transform-origin:0 0;position:relative}
+#board{position:absolute;inset:0;z-index:15;display:none;background:#fff}
+#board.on{display:block}
+#board.on~.bpan{display:flex}
+.bpan{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:25;display:none;align-items:center;gap:8px;background:#fff;border-radius:20px;padding:8px 12px;box-shadow:0 8px 30px #0003;white-space:nowrap}
+.bl{font-weight:900;font-size:18px;margin-right:2px}
+.bc{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #cfd5e2;position:relative;display:grid;place-items:center;font-size:20px;cursor:pointer;flex:none}
+.bc.on{box-shadow:0 0 0 3px #5b4bdb}
+.bcx input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.bg{height:40px;padding:0 14px;border-radius:12px;background:#f1f3f8;font-weight:900;font-size:17px}
+.bg.on{background:#5b4bdb;color:#fff}
+.bclose{background:#ffe3e3;color:#c62828}
+.bsep{width:2px;height:28px;background:#e3e8f2}
+.tb.brd{width:auto;padding:0 10px;display:flex;gap:4px;font-size:22px}.tb.brd small{font-size:15px;font-weight:900}
+.tb.brd.on{background:#5b4bdb;color:#fff}
 #pen{position:absolute;inset:0;z-index:20;pointer-events:none;touch-action:none}
 #pen.on{pointer-events:auto;cursor:crosshair}
 .bot{position:absolute;bottom:0;left:0;right:0;height:78px;background:#fff;border-top:2px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 22px;z-index:5}
@@ -39,6 +53,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .tools{margin:0 auto;display:flex;gap:8px;align-items:center;background:#f6f7fb;border-radius:18px;padding:6px}
 .tb{width:50px;height:50px;border-radius:14px;font-size:24px;display:grid;place-items:center}
 .tb.on{background:#fff;box-shadow:0 0 0 3px var(--brand)}
+.col[data-c='#ffffff']{box-shadow:0 0 0 2px #b7bfd0}
 .col{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line)}
 .col.on{box-shadow:0 0 0 3px var(--ink)}
 .ans{height:54px;padding:0 22px;border-radius:16px;font-weight:900;font-size:19px;background:#fff4d6;color:#8a5a00;border:2px solid #f3d27a}
@@ -134,6 +149,16 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 </div>
 <div class="main" id="main">
  <div class="stagew" id="sw"><div class="stage" id="stage"></div></div>
+ <div id="board"></div><div class="bpan" id="bpan">
+  <span class="bl">Фон:</span>
+  <button class="bc" data-b="#ffffff" style="background:#ffffff"></button><button class="bc" data-b="#fff8e1" style="background:#fff8e1"></button><button class="bc" data-b="#e3f2fd" style="background:#e3f2fd"></button><button class="bc" data-b="#fce4ec" style="background:#fce4ec"></button>
+  <button class="bc" data-b="#e8f5e9" style="background:#e8f5e9"></button><button class="bc" data-b="#1f4d3a" style="background:#1f4d3a"></button><button class="bc" data-b="#1e2a44" style="background:#1e2a44"></button><button class="bc" data-b="#111111" style="background:#111"></button>
+  <label class="bc bcx" title="Кез келген түс">🎨<input type="color" id="bcol" value="#ffffff"></label>
+  <span class="bsep"></span>
+  <button class="bg on" data-g="none">▢ Таза</button><button class="bg" data-g="grid">▦ Тор көз</button><button class="bg" data-g="lines">☰ Жол</button>
+  <span class="bsep"></span>
+  <button class="bg bclose" id="bclose">✕ Жабу</button>
+ </div>
  <canvas id="pen"></canvas>
 </div>
 <div class="bot">
@@ -144,13 +169,15 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   <button class="col" style="background:#1e63d6" data-c="#1e63d6"></button>
   <button class="col" style="background:#1b9e5a" data-c="#1b9e5a"></button>
   <button class="col" style="background:#222" data-c="#222"></button>
+  <button class="col" style="background:#fff" data-c="#ffffff"></button>
   <button class="tb" id="tEr" title="Өшіргіш">🧽</button>
   <button class="tb" id="tClr" title="Тазалау">🗑️</button>
+  <button class="tb brd" id="tBoard" title="Бос тақта">🖼️<small>Тақта</small></button>
  </div>
  <button class="ans" id="ans">👁 Жауабы</button>
  <button class="nav nx" id="next"><span>Келесі</span> ›</button>
 </div>
-<script src="data.js?v=7"></script>
+<script src="data.js?v=8"></script>
 <script>
 /* ====== негізгі көмекшілер ====== */
 const $=s=>document.querySelector(s);
@@ -221,7 +248,7 @@ function chips(){const c=$('#chips');c.innerHTML='';let i=0;STEPS.forEach(s=>{if
  const b=el('button','chip'+(s.kind==='x'?' x':''),s.chip);b.onclick=()=>go(k);c.append(b)});mark()}
 function mark(){const bs=[...document.querySelectorAll('.chip')];bs.forEach((b,i)=>{b.classList.toggle('on',i===CUR);b.classList.toggle('dn',DONE.has(i))});
  bs[CUR]?.scrollIntoView({inline:'nearest',block:'nearest'})}
-function go(i){const S=realSteps();if(i<0||i>=S.length)return;CUR=i;RID++;clearPen();T.reveal=null;
+function go(i){const S=realSteps();if(i<0||i>=S.length)return;if(typeof closeBoard==='function')closeBoard();CUR=i;RID++;clearPen();T.reveal=null;
  const st=$('#stage');st.innerHTML='';const s=S[i];
  if(s.title){const f=el('div','task k-'+(s.k||'book'));if(s.label)f.append(el('div','tlabel',s.label));
   f.append(el('div','thead',`<div class="tnum">${s.num}</div><div class="ttxt">${s.title}</div>`));const body=el('div','tbody');f.append(body);st.append(f);s.build(body,T)}
@@ -303,10 +330,31 @@ cv.addEventListener('pointermove',e=>{if(!drawing)return;const p=pt(e);cx.global
  cx.beginPath();cx.moveTo(lp[0],lp[1]);cx.lineTo(p[0],p[1]);cx.stroke();lp=p});
 ['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>drawing=false));
 T.pen=()=>{if(mode!=='pen')setMode('pen')};
+/* ====== бос тақта: фон түсі + тор көз ====== */
+const BD=$('#board');let BG='#ffffff',GR='none',lessonImg=null,boardImg=null;
+const dark=c=>{const h=c.replace('#','');const r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);return (r*299+g*587+b*114)/1000<120};
+function paintBoard(){const ln=dark(BG)?'rgba(255,255,255,.22)':'rgba(30,90,180,.22)';BD.style.backgroundColor=BG;
+ BD.style.backgroundImage=GR==='grid'?`linear-gradient(${ln} 1.5px,transparent 1.5px),linear-gradient(90deg,${ln} 1.5px,transparent 1.5px)`:GR==='lines'?`linear-gradient(${ln} 2px,transparent 2px)`:'none';
+ BD.style.backgroundSize=GR==='grid'?'40px 40px':GR==='lines'?'100% 48px':'';
+ document.querySelectorAll('.bc[data-b]').forEach(b=>b.classList.toggle('on',b.dataset.b===BG));document.querySelectorAll('.bg[data-g]').forEach(b=>b.classList.toggle('on',b.dataset.g===GR));
+ try{localStorage.setItem('nu_board',JSON.stringify({BG,GR}))}catch(e){}
+ if(BD.classList.contains('on')){const d=dark(BG);if(d&&(color==='#222'||color==='#1e63d6'))pickCol('#ffffff');if(!d&&color==='#ffffff')pickCol('#e53935')}}
+function pickCol(c){color=c;document.querySelectorAll('.col').forEach(x=>x.classList.toggle('on',x.dataset.c===c))}
+try{const o=JSON.parse(localStorage.getItem('nu_board')||'null');if(o){BG=o.BG||BG;GR=o.GR||GR}}catch(e){}
+const snap=()=>cx.getImageData(0,0,cv.width,cv.height);
+function openBoard(){if(BD.classList.contains('on'))return closeBoard();lessonImg=snap();clearPen();if(boardImg&&boardImg.width===cv.width)cx.putImageData(boardImg,0,0);
+ BD.classList.add('on');$('#tBoard').classList.add('on');if(mode!=='pen')setMode('pen');paintBoard();
+}
+function closeBoard(){if(!BD.classList.contains('on'))return;boardImg=snap();clearPen();if(lessonImg&&lessonImg.width===cv.width)cx.putImageData(lessonImg,0,0);BD.classList.remove('on');$('#tBoard').classList.remove('on')}
+$('#tBoard').onclick=openBoard;$('#bclose').onclick=closeBoard;
+document.querySelectorAll('.bc[data-b]').forEach(b=>b.onclick=()=>{BG=b.dataset.b;paintBoard()});
+$('#bcol').oninput=e=>{BG=e.target.value;paintBoard()};
+document.querySelectorAll('.bg[data-g]').forEach(b=>b.onclick=()=>{GR=b.dataset.g;paintBoard()});
+
 
 /* ====== жүктеу ====== */
 fit();
-const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=7`;
+const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=8`;
 sc.onerror=()=>{$('#stage').innerHTML=`<div class="intro"><div class="no">${N}</div><h1>${LES?LES.t:''}</h1><div style="font-size:90px">🛠️</div><div class="big mut">Сабақ дайындалуда</div></div>`;
  document.querySelector('.bot').style.display='none';$('#main').style.bottom='0';fit()};
 document.body.append(sc);
