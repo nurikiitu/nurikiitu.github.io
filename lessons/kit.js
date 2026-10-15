@@ -151,3 +151,24 @@ K.findTypes=function(b,T,{w=900,h=540,bg,items,deco='',good,q,msgBad,after}){
  s.els.forEach(e=>e.onclick=()=>{const t=e.dataset.t;if(good.includes(t)){if(found.has(t))return;found.add(t);s.els.filter(x=>x.dataset.t===t).forEach(x=>{x.append(el('span','bdg','✓'));T.ok(x)});pr.textContent=found.size+' / '+good.length;msg.textContent='';
    if(found.size===good.length){if(after){T.later(()=>{side.innerHTML='';after(side,s)},1200);toast('Барлығын таптың! ✓')}else T.done()}}else{T.bad(e);msg.textContent=msgBad?msgBad(t):'Бұл емес 🙂'}});
  T.reveal=()=>s.els.forEach(e=>{if(good.includes(e.dataset.t))e.classList.add('hint')});return s};
+
+/* фигуралар */
+const SHP=(t,c,s=80)=>{const C=c||{circle:'#29b6f6',square:'#ec407a',triangle:'#fdd835',rect:'#66bb6a'}[t];
+ if(t==='circle')return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="${C}"/></svg>`;
+ if(t==='square')return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" fill="${C}"/></svg>`;
+ if(t==='triangle')return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><path d="M50 8 L94 90 H6Z" fill="${C}"/></svg>`;
+ if(t==='rect')return `<svg width="${s*1.4}" height="${s}" viewBox="0 0 140 100"><rect x="6" y="18" width="128" height="64" fill="${C}"/></svg>`;
+ if(t==='flag')return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect x="18" y="8" width="6" height="88" fill="#555"/><path d="M24 10 H88 L74 30 L88 50 H24Z" fill="${C}"/></svg>`;return ''};
+/* латын шаршысы: әр жол мен бағанда әр фигура бір рет */
+K.latin=function(b,T,{grids,opts}){col(b,14,'center');const row=el('div','');row.style.cssText='display:flex;gap:60px';b.append(row);let left=0;const all=[];
+ grids.forEach(g=>{const t=el('div','');t.style.cssText='display:grid;grid-template-columns:repeat(3,130px);gap:0;border:4px solid #e3c9f0;border-radius:18px;overflow:hidden;background:#fff';
+  g.forEach(r=>r.forEach(c=>{const cell=el('div','');cell.style.cssText='height:130px;display:grid;place-items:center;border:2px solid #f0e2f7';
+   if(c[0]==='?'){const s=el('button','slot','?');s.style.cssText+=';width:100px;height:100px';s.dataset.w=c.slice(1);left++;all.push(s);
+    s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,opts.map(o=>o.k),k=>opts.find(o=>o.k===k).h,k=>{if(k===s.dataset.w){s.innerHTML=opts.find(o=>o.k===k).h;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})};cell.append(s)}
+   else cell.innerHTML=opts.find(o=>o.k===c).h;t.append(cell)}));row.append(t)});
+ T.reveal=()=>all.forEach(s=>{if(!s.dataset.ok){s.innerHTML=opts.find(o=>o.k===s.dataset.w).h;s.style.opacity='.6'}})};
+/* сан сәулесі (секірулер) */
+function nline(max,jumps=[],start=0,w=900){const st=w/(max+.6),x=i=>30+i*st;let s=`<svg width="${w+40}" height="150" viewBox="0 0 ${w+40} 150"><line x1="20" y1="110" x2="${w+20}" y2="110" stroke="#1f2a44" stroke-width="4"/>`;
+ for(let i=0;i<=max;i++)s+=`<line x1="${x(i)}" y1="98" x2="${x(i)}" y2="122" stroke="#1f2a44" stroke-width="4"/><text x="${x(i)}" y="146" text-anchor="middle" font-size="26" font-weight="900" font-family="Nunito">${i}</text>`;
+ let p=start;jumps.forEach(j=>{const q=p+j;const mx=(x(p)+x(q))/2;s+=`<path d="M${x(p)} 96 Q${mx} ${40-Math.abs(j)*4} ${x(q)} 96" fill="none" stroke="${j>0?'#e53935':'#1e63d6'}" stroke-width="5" marker-end="url(#ah)"/><text x="${mx}" y="${50-Math.abs(j)*4}" text-anchor="middle" font-size="26" font-weight="900" fill="${j>0?'#e53935':'#1e63d6'}">${j>0?'+':'−'}${Math.abs(j)}</text>`;p=q});
+ return s+`<defs><marker id="ah" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#555" stroke-width="2"/></marker></defs></svg>`}

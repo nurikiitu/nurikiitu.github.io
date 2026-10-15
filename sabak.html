@@ -75,6 +75,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .k-self{--tc:#dadde3;--th:#eef0f3;--tn:#5f6b7a}
 .k-life{--tc:#f4dc9c;--th:#fdf3d6;--tn:#c28a00}
 .k-x{--tc:#d6ccff;--th:#f1edff;--tn:#6a4fe0}
+.k-res{--tc:#e3c9f0;--th:#f7ecfb;--tn:#9b4fc4}
 .k-rem{--tc:#f5cfa6;--th:#fdebd7;--tn:#d9792b}
 .k-new{--tc:#c9def6;--th:#e7f1fc;--tn:#3b7dd8}
 
@@ -303,7 +304,8 @@ function intro(box,def){const w=el('div','intro',`<div class="no">${N}</div><h1>
  <div class="goal"><span>ЖАҢАНЫ ОҚЫП-ҮЙРЕНУ</span>${def.goal}</div>
  <div class="plan"><div>📘 Кітаптағы тапсырмалар: ${def.book.filter(b=>b.build).length}</div><div>⭐ Күрделі: ${def.extra.length}</div><div>⚔️ Жарыс</div><div>🎮 Ойын: ${def.games.length}</div></div>`);
  box.append(w);if(def.introExtra)def.introExtra(w,T);
- const b=el('button','btn','Бастау ›');b.style.marginTop='6px';b.onclick=()=>go(1);w.append(b)}
+ const b=el('button','btn','Бастау ›');b.style.marginTop='6px';b.onclick=()=>go(1);w.append(b);
+ requestAnimationFrame(()=>{const h=w.scrollHeight;if(h>740){w.style.transform=`scale(${740/h})`;w.style.transformOrigin='50% 50%'}})}
 
 /* ====== 2 оқушы жарысы: арқан тартыс ====== */
 function duel(box,def){const alive=T.alive();const GOAL=5;let pos=0,over=false,sc=[0,0];
