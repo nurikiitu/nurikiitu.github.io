@@ -42,6 +42,10 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .bg.on{background:#5b4bdb;color:#fff}
 .bclose{background:#ffe3e3;color:#c62828}
 .bsep{width:2px;height:28px;background:#e3e8f2}
+.szs{display:flex;gap:3px;background:#fff;border-radius:14px;padding:3px}
+.sz{width:36px;height:44px;border-radius:11px;display:grid;place-items:center}
+.sz i{display:block;border-radius:50%;background:#1f2a44}
+.sz.on{background:#ece9ff;box-shadow:inset 0 0 0 2px #5b4bdb}
 .tb.brd{width:auto;padding:0 10px;display:flex;gap:4px;font-size:22px}.tb.brd small{font-size:15px;font-weight:900}
 .tb.brd.on{background:#5b4bdb;color:#fff}
 #pen{position:absolute;inset:0;z-index:20;pointer-events:none;touch-action:none}
@@ -157,7 +161,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   <button class="bc" data-b="#e8f5e9" style="background:#e8f5e9"></button><button class="bc" data-b="#1f4d3a" style="background:#1f4d3a"></button><button class="bc" data-b="#1e2a44" style="background:#1e2a44"></button><button class="bc" data-b="#111111" style="background:#111"></button>
   <label class="bc bcx" title="Кез келген түс">🎨<input type="color" id="bcol" value="#ffffff"></label>
   <span class="bsep"></span>
-  <button class="bg on" data-g="none">▢ Таза</button><button class="bg" data-g="grid">▦ Тор көз</button><button class="bg" data-g="lines">☰ Жол</button>
+  <button class="bg on" data-g="none">▢ Таза</button><button class="bg" data-g="grid">▦ Тор көз</button><button class="bg" data-g="lines">☰ Жол</button><button class="bg" data-g="calli">✍️ Әліппе</button>
   <span class="bsep"></span>
   <button class="bg" id="bHand" title="Тақтаны жылжыту">✋ Жылжыту</button><button class="bg" id="bOut">−</button><span class="bl" id="bZ" style="min-width:58px;text-align:center">100%</span><button class="bg" id="bIn">＋</button><button class="bg" id="bFit" title="Бастапқы көрініс">⟲</button>
   <span class="bsep"></span>
@@ -175,13 +179,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   <button class="col" style="background:#222" data-c="#222"></button>
   <button class="col" style="background:#fff" data-c="#ffffff"></button>
   <button class="tb" id="tEr" title="Өшіргіш">🧽</button>
+  <span class="szs"><button class="sz" data-z="0" title="Жіңішке"><i style="width:6px;height:6px"></i></button><button class="sz on" data-z="1" title="Орташа"><i style="width:11px;height:11px"></i></button><button class="sz" data-z="2" title="Жуан"><i style="width:18px;height:18px"></i></button></span>
   <button class="tb" id="tClr" title="Тазалау">🗑️</button>
   <button class="tb brd" id="tBoard" title="Бос тақта">🖼️<small>Тақта</small></button>
  </div>
  <button class="ans" id="ans">👁 Жауабы</button>
  <button class="nav nx" id="next"><span>Келесі</span> ›</button>
 </div>
-<script src="data.js?v=9"></script>
+<script src="data.js?v=10"></script>
 <script>
 /* ====== негізгі көмекшілер ====== */
 const $=s=>document.querySelector(s);
@@ -322,15 +327,18 @@ function fit(){const m=$('#main'),W=m.clientWidth,H=m.clientHeight;SCALE=Math.mi
 addEventListener('resize',fit);
 
 /* ====== қалам ====== */
+const PZ=[3,6,12],EZ=[18,40,90];let pz=1,ez=1;
 const cv=$('#pen'),cx=cv.getContext('2d');let mode=null,color='#e53935',drawing=false,lp=null;
 function sizePen(){const m=$('#main'),r=devicePixelRatio||1;const img=cv.width?cx.getImageData(0,0,cv.width,cv.height):null;cv.width=m.clientWidth*r;cv.height=m.clientHeight*r;cv.style.width=m.clientWidth+'px';cv.style.height=m.clientHeight+'px';cx.setTransform(r,0,0,r,0,0);}
 function clearPen(){cx.save();cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,cv.width,cv.height);cx.restore()}
 let setMode=function(m){mode=mode===m?null:m;cv.classList.toggle('on',!!mode);$('#tPen').classList.toggle('on',mode==='pen');$('#tEr').classList.toggle('on',mode==='er')}
+function syncSz(){const k=mode==='er'?ez:pz;document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',+b.dataset.z===k))}
+document.querySelectorAll('.sz').forEach(b=>b.onclick=()=>{const z=+b.dataset.z;if(mode==='er')ez=z;else{pz=z;if(mode!=='pen')setMode('pen')}syncSz()});
 $('#tPen').onclick=()=>setMode('pen');$('#tEr').onclick=()=>setMode('er');$('#tClr').onclick=clearPen;
 document.querySelectorAll('.col').forEach(b=>b.onclick=()=>{color=b.dataset.c;document.querySelectorAll('.col').forEach(x=>x.classList.toggle('on',x===b));if(mode!=='pen')setMode('pen')});
 const pt=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
 cv.addEventListener('pointerdown',e=>{drawing=true;lp=pt(e);cv.setPointerCapture(e.pointerId)});
-cv.addEventListener('pointermove',e=>{if(!drawing)return;const p=pt(e);cx.globalCompositeOperation=mode==='er'?'destination-out':'source-over';cx.strokeStyle=color;cx.lineWidth=mode==='er'?40:6;cx.lineCap=cx.lineJoin='round';
+cv.addEventListener('pointermove',e=>{if(!drawing)return;const p=pt(e);cx.globalCompositeOperation=mode==='er'?'destination-out':'source-over';cx.strokeStyle=color;cx.lineWidth=mode==='er'?EZ[ez]:PZ[pz];cx.lineCap=cx.lineJoin='round';
  cx.beginPath();cx.moveTo(lp[0],lp[1]);cx.lineTo(p[0],p[1]);cx.stroke();lp=p});
 ['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>drawing=false));
 T.pen=()=>{if(mode!=='pen')setMode('pen')};
@@ -343,10 +351,12 @@ function bsize(){const r=devicePixelRatio||1,w=BD.clientWidth,h=BD.clientHeight;
 const tr=(c)=>{const r=devicePixelRatio||1;c.setTransform(r*V.s,0,0,r*V.s,-V.x*V.s*r,-V.y*V.s*r)};
 function redraw(){if(!BD.classList.contains('on'))return;const r=devicePixelRatio||1,w=BD.clientWidth,h=BD.clientHeight;
  gx.setTransform(1,0,0,1,0,0);gx.clearRect(0,0,GC.width,GC.height);
- if(GR!=='none'){tr(gx);const ln=dark(BG)?'rgba(255,255,255,.25)':'rgba(30,90,180,.25)';gx.strokeStyle=ln;gx.lineWidth=1.5/V.s;const st=GR==='grid'?40:48;
+ if(GR!=='none'){tr(gx);const ln=GR==='calli'?(dark(BG)?'rgba(255,255,255,.45)':'rgba(40,40,60,.55)'):(dark(BG)?'rgba(255,255,255,.25)':'rgba(30,90,180,.25)');gx.strokeStyle=ln;gx.lineWidth=1.5/V.s;const st=GR==='grid'?40:48;
   const x0=Math.floor(V.x/st)*st,y0=Math.floor(V.y/st)*st,x1=V.x+w/V.s,y1=V.y+h/V.s;gx.beginPath();
   if(GR==='grid')for(let x=x0;x<=x1;x+=st){gx.moveTo(x,y0);gx.lineTo(x,y1)}
-  for(let y=y0;y<=y1;y+=st){gx.moveTo(x0,y);gx.lineTo(x1,y)}gx.stroke()}
+  if(GR==='calli'){const P=54,yy=Math.floor(V.y/P)*P;for(let y=yy;y<=y1;y+=P){gx.moveTo(x0,y);gx.lineTo(x1,y);gx.moveTo(x0,y+18);gx.lineTo(x1,y+18)}
+   const k=.27,c0=Math.floor((x0+k*y0)/90)*90;for(let c=c0;c<=x1+k*y1+90;c+=90){gx.moveTo(c-k*y0,y0);gx.lineTo(c-k*y1,y1)}}
+  else for(let y=y0;y<=y1;y+=st){gx.moveTo(x0,y);gx.lineTo(x1,y)}gx.stroke()}
  bx.setTransform(1,0,0,1,0,0);bx.clearRect(0,0,BC.width,BC.height);tr(bx);bx.lineCap=bx.lineJoin='round';
  STR.forEach(k=>{bx.globalCompositeOperation=k.er?'destination-out':'source-over';bx.strokeStyle=k.c;bx.lineWidth=k.w;bx.beginPath();k.p.forEach((q,i)=>i?bx.lineTo(q[0],q[1]):bx.moveTo(q[0],q[1]));if(k.p.length===1)bx.lineTo(k.p[0][0]+.01,k.p[0][1]);bx.stroke()});
  bx.globalCompositeOperation='source-over';$('#bZ').textContent=Math.round(V.s*100)+'%'}
@@ -357,7 +367,7 @@ function paintBoard(){BD.style.backgroundColor=BG;
 try{const o=JSON.parse(localStorage.getItem('nu_board')||'null');if(o){BG=o.BG||BG;GR=o.GR||GR}}catch(e){}
 const bmode=()=>mode||'hand';
 function syncHand(){$('#bHand').classList.toggle('on',bmode()==='hand');BC.classList.toggle('hand',bmode()==='hand')}
-const _setMode=setMode;setMode=function(m){_setMode(m);syncHand()};
+const _setMode=setMode;setMode=function(m){_setMode(m);syncHand();syncSz()};
 function openBoard(){if(BD.classList.contains('on'))return closeBoard();BD.classList.add('on');cv.style.display='none';$('#tBoard').classList.add('on');if(mode!=='pen')setMode('pen');bsize();paintBoard();syncHand()}
 function closeBoard(){if(!BD.classList.contains('on'))return;BD.classList.remove('on');cv.style.display='';$('#tBoard').classList.remove('on')}
 $('#tBoard').onclick=openBoard;$('#bclose').onclick=closeBoard;
@@ -374,7 +384,7 @@ BC.addEventListener('wheel',e=>{e.preventDefault();const p=lp2(e);zoomAt(e.delta
 BC.addEventListener('pointerdown',e=>{BC.setPointerCapture(e.pointerId);PTS.set(e.pointerId,lp2(e));
  if(PTS.size===2){curS=null;const [a,b]=[...PTS.values()];pinch={d:Math.hypot(a[0]-b[0],a[1]-b[1]),m:[(a[0]+b[0])/2,(a[1]+b[1])/2]};return}
  if(PTS.size>2)return;const m=bmode();if(m==='hand'){pinch=null;return}
- curS={c:color,er:m==='er',w:(m==='er'?40:6)/V.s,p:[W2(lp2(e))]};STR.push(curS);redraw()});
+ curS={c:color,er:m==='er',w:(m==='er'?EZ[ez]:PZ[pz])/V.s,p:[W2(lp2(e))]};STR.push(curS);redraw()});
 BC.addEventListener('pointermove',e=>{if(!PTS.has(e.pointerId))return;const prev=PTS.get(e.pointerId),p=lp2(e);PTS.set(e.pointerId,p);
  if(PTS.size===2&&pinch){const [a,b]=[...PTS.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]),m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
   V.x-=(m[0]-pinch.m[0])/V.s;V.y-=(m[1]-pinch.m[1])/V.s;zoomAt(d/pinch.d,m[0],m[1]);pinch={d,m};return}
@@ -385,7 +395,7 @@ addEventListener('resize',()=>{if(BD.classList.contains('on'))bsize()});
 
 /* ====== жүктеу ====== */
 fit();
-const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=9`;
+const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=10`;
 sc.onerror=()=>{$('#stage').innerHTML=`<div class="intro"><div class="no">${N}</div><h1>${LES?LES.t:''}</h1><div style="font-size:90px">🛠️</div><div class="big mut">Сабақ дайындалуда</div></div>`;
  document.querySelector('.bot').style.display='none';$('#main').style.bottom='0';fit()};
 document.body.append(sc);
