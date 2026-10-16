@@ -216,3 +216,25 @@ function digitSVG(n){const p=String(n).split('').map((d,i,a)=>{const dx=a.length
 K.introNum=function(w,T,n,e='🍎'){const r=el('div','');r.style.cssText='display:flex;gap:36px;align-items:center';r.append(el('div','',digitSVG(n)));
  r.append(el('div','',`<div style="display:flex;gap:22px;align-items:center;font-size:${n>6?44:60}px;flex-wrap:wrap;max-width:1100px">${n?e.repeat(n):'🧺'} <span style="display:flex">${n?hand(n,84):''}</span> ${n?dots(n,84):''} <b style="color:#3b7dd8;font-size:80px">${n}</b></div><div class="mut" style="font-size:26px;margin-top:6px">${NW[n]}</div>`));
  w.append(r);w.append(el('div','',nline(Math.max(n,5),[...Array(n)].map(()=>1))));const b=el('button','btn alt',`✍️ Тақтаға ${n} цифрын жазып көр`);b.onclick=()=>T.pen();w.append(b)};
+
+/* заттарды ыдыстарға бөлу: барлық тәсілдерді тап */
+K.split=function(b,T,{n,fixed=0,e='✏️',cols=['#81d4fa','#f48fb1','#bdbdbd'],hint}){col(b,12,'center');const m=n-fixed;
+ const cups=el('div','');cups.style.cssText='display:flex;gap:44px;align-items:flex-end';const C=cols.slice(fixed?0:1).map(c=>{const x=el('div','');x.style.cssText=`width:${fixed?240:330}px;height:200px;background:${c};border-radius:12px 12px 40px 40px;display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:2px;padding:10px;font-size:48px;box-shadow:inset 0 -14px 0 #0002`;cups.append(x);return x});
+ if(fixed)C[0].innerHTML=`<span>${e.repeat(fixed)}</span>`;const A=fixed?1:0;
+ const eq=el('div','qline','');eq.style.fontSize='52px';const btn=el('button','btn','✔ Жазып қой');const found=el('div','');found.style.cssText='display:flex;gap:12px;flex-wrap:wrap;justify-content:center;min-height:64px';
+ b.append(el('div','mut',hint||'Затты бассаң, ол көрші ыдысқа ауысады'),cups,eq,btn,found);
+ const P=[...Array(m)].map((_,i)=>{const p=el('button','',e);p.style.fontSize='48px';p.dataset.s=i<Math.ceil(m/2)?A:A+1;p.onclick=()=>{p.dataset.s=+p.dataset.s===A?A+1:A;beep('tap');draw()};return p});
+ const got=new Set();const cnt=()=>P.filter(p=>+p.dataset.s===A).length;
+ const lab=a=>(fixed?fixed+' + ':'')+a+' + '+(m-a);
+ const draw=()=>{P.forEach(p=>C[+p.dataset.s].append(p));eq.textContent=lab(cnt())+' = '+n};draw();
+ const add=a=>{if(got.has(a))return false;got.add(a);found.append(el('div','goal',lab(a)));return true};
+ btn.onclick=()=>{if(add(cnt())){T.ok(btn);if(got.size===m+1)T.done(`Барлық ${m+1} тәсіл табылды! ✓`)}else{T.bad(btn);toast('Бұл тәсіл бұрын жазылған 🙂','#c28a00')}};
+ T.reveal=()=>{for(let a=0;a<=m;a++)add(a);T.done()}};
+
+/* бірнеше бағандағы есептер (ортақ санауыш) */
+K.fillGroups=function(b,T,{groups,vals=[0,1,2,3,4,5,6,7,8,9,10],signs=['>','<','='],fs=46,gap=60}){b.style.justifyContent='center';b.style.alignItems='center';b.style.gap=gap+'px';
+ groups.forEach(g=>{const c=el('div','');c.style.cssText='display:flex;flex-direction:column;align-items:center;gap:10px;background:#fbfcff;border:3px solid var(--line);border-radius:20px;padding:16px 20px';if(g.pic)c.insertAdjacentHTML('beforeend',g.pic);
+  const tmp=el('div','');K.fill(tmp,T,{fs,vals,signs,rows:g.rows,ans:g.ans});[...tmp.children].forEach(x=>c.append(x));b.append(c)});
+ const slots=b.querySelectorAll('.slot');let left=slots.length;
+ slots.forEach(s=>{const isS=['>','<','=','+','-'].includes(s.dataset.w);s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,isS?signs:vals,isS?SG:null,v=>{if(String(v)===s.dataset.w){s.innerHTML=isS?SG(v):v;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})}});
+ T.reveal=()=>slots.forEach(s=>{if(!s.dataset.ok){s.innerHTML=SG(s.dataset.w);s.style.color='#e0a000'}})};
