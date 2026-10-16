@@ -187,3 +187,22 @@ K.chalk=function(b,T,{rows,ans,pics,vals=[0,1,2,3,4,5,6,7,8,9,10]}){
  /* бөлек fill шақыруы әр жолға жеке санауыш береді – жалпы санауыш */
  const slots=wrap.querySelectorAll('.slot');let left=slots.length;slots.forEach(s=>{s.onclick=()=>{T.picker(s,vals,null,v=>{if(String(v)===s.dataset.w){s.textContent=v;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})}});
  T.reveal=()=>slots.forEach(s=>{if(!s.dataset.ok){s.textContent=s.dataset.w;s.style.color='#ffd54f'}})};
+
+/* асық (сурет) */
+const ASYQ=(c='#7cc576',s=70)=>`<svg width="${s}" height="${s*.7}" viewBox="0 0 100 70"><path d="M12 30 Q8 8 30 12 Q50 2 70 12 Q92 8 88 30 Q96 52 74 58 Q50 70 26 58 Q4 52 12 30Z" fill="${c}" stroke="#0002" stroke-width="3"/><ellipse cx="50" cy="34" rx="16" ry="10" fill="#0001"/></svg>`;
+/* сан үйі (дайын, көрсетуге) */
+function houseView(n,pairs,c='#ef7f6f'){return `<div style="display:inline-flex;flex-direction:column;align-items:center"><svg width="220" height="80" viewBox="0 0 220 80"><path d="M6 76 L110 6 L214 76Z" fill="${c}" stroke="#0003" stroke-width="4"/><text x="110" y="66" text-anchor="middle" font-size="44" font-weight="900" fill="#fff" font-family="Nunito">${n}</text></svg>
+ <div style="background:#fff7e6;border:4px solid #e6b86a;border-top:none;width:196px">${pairs.map(([a,b])=>`<div style="display:flex;border-bottom:2px solid #f0d6a3"><div style="flex:1;text-align:center;font-size:34px;font-weight:900">${a}</div><div style="flex:1;text-align:center;font-size:34px;font-weight:900;border-left:2px solid #f0d6a3">${b}</div></div>`).join('')}</div></div>`}
+/* түсті жолақ (құрам) */
+const bar=(a,b,u=50)=>{const c=x=>`<div style="width:${u}px;height:${u*.7}px;background:${x};border-right:2px solid #333"></div>`;return `<div style="display:flex;border:3px solid #333">${c('#1e88e5').repeat(a)}${c('#e53935').repeat(b)}</div>`};
+
+/* цифр жазылуы */
+const DIGP={0:'M50 20 C18 20 18 112 50 112 C82 112 82 20 50 20',4:'M62 18 L22 82 H82 M62 18 V112',5:'M74 20 H36 L32 60 Q52 50 68 62 Q82 78 70 98 Q54 116 26 102',
+ 6:'M72 24 Q44 12 34 46 Q26 88 44 108 Q70 118 76 88 Q76 64 52 64 Q34 66 30 84',7:'M24 20 H80 L42 112',8:'M50 62 Q24 52 32 30 Q42 14 60 22 Q76 34 64 52 Q50 62 40 74 Q28 92 44 108 Q64 116 72 96 Q76 78 50 62',
+ 9:'M72 50 Q68 20 46 24 Q28 30 30 48 Q36 66 62 56 Q72 50 72 50 Q72 92 50 110 Q36 114 28 104'};
+const NW=['нөл','бір','екі','үш','төрт','бес','алты','жеті','сегіз','тоғыз','он'];
+function digitSVG(n){const p=String(n).split('').map((d,i,a)=>{const dx=a.length>1?(i?40:-40):0;return `<path transform="translate(${dx} 0) scale(${a.length>1?.8:1}) translate(${a.length>1?12:0} 12)" d="${DIGP[d]||'M30 45 L62 18 L62 112'}" fill="none" stroke="#3b7dd8" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="400" stroke-dashoffset="400"><animate attributeName="stroke-dashoffset" from="400" to="0" dur="2s" begin="${0.3+i*2}s" fill="freeze"/></path>`}).join('');
+ return `<svg width="150" height="190" viewBox="0 0 100 130" style="background:#fff;border:3px solid #c9def6;border-radius:18px"><line x1="0" y1="20" x2="100" y2="20" stroke="#c9def6" stroke-dasharray="4"/><line x1="0" y1="110" x2="100" y2="110" stroke="#c9def6" stroke-dasharray="4"/>${p}</svg>`}
+K.introNum=function(w,T,n,e='🍎'){const r=el('div','');r.style.cssText='display:flex;gap:36px;align-items:center';r.append(el('div','',digitSVG(n)));
+ r.append(el('div','',`<div style="display:flex;gap:22px;align-items:center;font-size:${n>6?44:60}px;flex-wrap:wrap;max-width:1100px">${n?e.repeat(n):'🧺'} <span style="display:flex">${n?hand(n,84):''}</span> ${n?dots(n,84):''} <b style="color:#3b7dd8;font-size:80px">${n}</b></div><div class="mut" style="font-size:26px;margin-top:6px">${NW[n]}</div>`));
+ w.append(r);w.append(el('div','',nline(Math.max(n,5),[...Array(n)].map(()=>1))));const b=el('button','btn alt',`✍️ Тақтаға ${n} цифрын жазып көр`);b.onclick=()=>T.pen();w.append(b)};
