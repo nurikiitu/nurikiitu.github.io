@@ -305,7 +305,7 @@ function intro(box,def){const w=el('div','intro',`<div class="no">${N}</div><h1>
  <div class="plan"><div>📘 Кітаптағы тапсырмалар: ${def.book.filter(b=>b.build).length}</div><div>⭐ Күрделі: ${def.extra.length}</div><div>⚔️ Жарыс</div><div>🎮 Ойын: ${def.games.length}</div></div>`);
  box.append(w);if(def.introExtra)def.introExtra(w,T);
  const b=el('button','btn','Бастау ›');b.style.marginTop='6px';b.onclick=()=>go(1);w.append(b);
- requestAnimationFrame(()=>{const h=w.scrollHeight;if(h>740){w.style.transform=`scale(${740/h})`;w.style.transformOrigin='50% 50%'}})}
+ requestAnimationFrame(()=>{const h=w.scrollHeight,ww=Math.max(...[...w.children].map(c=>c.scrollWidth));const k=Math.min(740/h,1460/ww);if(k<1){w.style.transform=`scale(${k})`;w.style.transformOrigin='50% 50%'}})}
 
 /* ====== 2 оқушы жарысы: арқан тартыс ====== */
 function duel(box,def){const alive=T.alive();const GOAL=5;let pos=0,over=false,sc=[0,0];

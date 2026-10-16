@@ -75,7 +75,7 @@ function gwrap(box,bg){box.innerHTML='';const W=el('div','');W.style.cssText='po
 const GM={
 /* жалпы викторина: 10 айналым, уақыт пен қате */
 quiz({icon,title,gen,rounds=10,bg,em:emj='🏆',win='Керемет!'}){return{icon,build(box,T){const start=()=>{const W=gwrap(box,bg);const st=prog(W,rounds);const hd=el('div','qline',title);hd.style.fontSize='32px';const tm=el('div','mut','');tm.style.fontSize='24px';
- const qb=el('div','');qb.style.cssText='flex:1;display:flex;align-items:center;justify-content:center;width:100%';const ob=el('div','');ob.style.cssText='display:flex;gap:16px;flex-wrap:wrap;justify-content:center';W.append(st,hd,tm,qb,ob);
+ const qb=el('div','');qb.style.cssText='flex:1;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;width:100%';const ob=el('div','');ob.style.cssText='display:flex;gap:16px;flex-wrap:wrap;justify-content:center';W.append(st,hd,tm,qb,ob);
  let k=0,err=0,t0=Date.now(),cur;const alive=T.alive();const tick=()=>{if(!alive()||!W.isConnected)return;tm.textContent='⏱ '+Math.floor((Date.now()-t0)/1000)+' сек · ❌ '+err;setTimeout(tick,500)};tick();
  const show=()=>{st.set(k);cur=gen(k);qb.innerHTML=cur.q;ob.innerHTML='';shuffle(cur.o).forEach(v=>{const b=typeof v==='number'&&!cur.oh?ncard(v):el('button','opt',cur.oh?cur.oh(v):v);b.dataset.v=v;if(cur.oh){b.style.height='auto';b.style.minHeight='84px';b.style.padding='8px 18px'}
   b.onclick=()=>{if(b.dataset.l)return;if(String(v)===String(cur.a)){T.ok(b);[...ob.children].forEach(x=>x.dataset.l=1);T.later(()=>{k++;if(k<rounds)show();else{const s=Math.floor((Date.now()-t0)/1000);T.end(box,{em:emj,title:win,text:`Уақыт: ${s} сек · ${T.errTxt(err)}`,again:start})}},650)}else{err++;T.bad(b)}};ob.append(b)})};
@@ -172,3 +172,18 @@ function nline(max,jumps=[],start=0,w=900){const st=w/(max+.6),x=i=>30+i*st;let 
  for(let i=0;i<=max;i++)s+=`<line x1="${x(i)}" y1="98" x2="${x(i)}" y2="122" stroke="#1f2a44" stroke-width="4"/><text x="${x(i)}" y="146" text-anchor="middle" font-size="26" font-weight="900" font-family="Nunito">${i}</text>`;
  let p=start;jumps.forEach(j=>{const q=p+j;const mx=(x(p)+x(q))/2;s+=`<path d="M${x(p)} 96 Q${mx} ${40-Math.abs(j)*4} ${x(q)} 96" fill="none" stroke="${j>0?'#e53935':'#1e63d6'}" stroke-width="5" marker-end="url(#ah)"/><text x="${mx}" y="${50-Math.abs(j)*4}" text-anchor="middle" font-size="26" font-weight="900" fill="${j>0?'#e53935':'#1e63d6'}">${j>0?'+':'−'}${Math.abs(j)}</text>`;p=q});
  return s+`<defs><marker id="ah" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#555" stroke-width="2"/></marker></defs></svg>`}
+
+/* дәптер торындағы есептер */
+K.notebook=function(b,T,{rows,ans,cols=2,vals=[0,1,2,3,4,5,6,7,8,9,10],fs=64}){
+ const wrap=el('div','');wrap.style.cssText='flex:1;display:flex;align-items:center;justify-content:center;background-color:#fff;background-image:linear-gradient(#9ec3ee 1.5px,transparent 1.5px),linear-gradient(90deg,#9ec3ee 1.5px,transparent 1.5px);background-size:48px 48px;border:3px solid #9ec3ee;border-radius:12px';
+ b.append(wrap);const inner=el('div','');inner.style.cssText=`display:grid;grid-template-columns:repeat(${cols},auto);gap:30px 110px`;wrap.append(inner);
+ const tmp=el('div','');K.fill(tmp,T,{fs,vals,rows,ans});[...tmp.children].forEach(c=>{c.style.fontFamily="'Comic Sans MS','Nunito',cursive";inner.append(c)})};
+/* бор тақта */
+K.chalk=function(b,T,{rows,ans,pics,vals=[0,1,2,3,4,5,6,7,8,9,10]}){
+ const wrap=el('div','');wrap.style.cssText='flex:1;display:grid;grid-template-columns:1fr 1fr;background:#2e6b4a;border:14px solid #8d5a2b;border-radius:10px;padding:20px';b.append(wrap);
+ rows.forEach((r,i)=>{const c=el('div','');c.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;'+(i%2?'border-left:3px solid #ffffff55;':'')+(i>1?'border-top:3px solid #ffffff55;':'');
+  c.insertAdjacentHTML('beforeend',`<div style="font-size:64px;filter:grayscale(.2)">${pics[i]}</div>`);const tmp=el('div','');K.fill(tmp,T,{fs:54,vals,rows:[r],ans:[ans[i]]});
+  const line=tmp.firstChild;line.querySelectorAll('span').forEach(s=>s.style.color='#fff');line.style.fontFamily="'Comic Sans MS','Nunito',cursive";c.append(line);wrap.append(c)});
+ /* бөлек fill шақыруы әр жолға жеке санауыш береді – жалпы санауыш */
+ const slots=wrap.querySelectorAll('.slot');let left=slots.length;slots.forEach(s=>{s.onclick=()=>{T.picker(s,vals,null,v=>{if(String(v)===s.dataset.w){s.textContent=v;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})}});
+ T.reveal=()=>slots.forEach(s=>{if(!s.dataset.ok){s.textContent=s.dataset.w;s.style.color='#ffd54f'}})};
