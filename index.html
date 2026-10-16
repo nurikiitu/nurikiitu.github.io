@@ -116,7 +116,7 @@ h1{font-size:44px;font-weight:900;letter-spacing:-1px;margin:6px 0 4px}
   </section>
  </main>
 </div>
-<script src="data.js?v=12"></script>
+<script src="data.js?v=13"></script>
 <script>
 const $=s=>document.querySelector(s);
 const ST={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
@@ -151,7 +151,7 @@ function render(){
   if(!d||!d.ls.length){box.innerHTML='<div class="empty"><div><div>🛠️</div>Бұл тоқсанның тақырыптары жақында қосылады</div></div>';return}
   d.ls.forEach(l=>{const id=key+'/'+l.n,ok=READY.has(id);const b=document.createElement('button');b.className='ls'+(ok?' rd':'');
    b.innerHTML=`<div class="num">${l.n}</div><div><div class="lab">${l.lab}</div><div class="tt">${l.t}</div></div>${ok?'<span class="ready">✓ Дайын</span>':'<span class="soon">Дайындалуда</span>'}<span class="go">›</span>`;
-   b.onclick=()=>{location.href='sabak.html?g='+g+'&s='+sub.id+'&n='+l.n+'&v=12'};box.append(b)})}
+   b.onclick=()=>{location.href='sabak.html?g='+g+'&s='+sub.id+'&n='+l.n+'&v=13'};box.append(b)})}
  list(q)}
 window.addEventListener('hashchange',render);
 
