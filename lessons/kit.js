@@ -51,11 +51,11 @@ fill(b,T,{rows,ans,vals=[0,1,2,3,4,5,6,7,8,9,10],signs=['>','<','='],pics,title,
 /* сан үйі (құрамы): n шатырда, қатарларда a | b, бір ұяшық бос */
 house(b,T,{n,pairs}){col(b,10,'center');let left=0;const all=[];
  const h=el('div','');h.style.cssText='display:flex;flex-direction:column;align-items:center';
- h.append(el('div','',`<svg width="380" height="110" viewBox="0 0 380 110"><path d="M10 105 L190 8 L370 105Z" fill="#ef7f6f" stroke="#c9584a" stroke-width="5"/><text x="190" y="90" text-anchor="middle" font-size="64" font-weight="900" fill="#fff" font-family="Nunito">${n}</text></svg>`));
+ h.append(el('div','',`<svg width="380" height="${pairs.length>6?80:110}" viewBox="0 0 380 110" preserveAspectRatio="none"><path d="M10 105 L190 8 L370 105Z" fill="#ef7f6f" stroke="#c9584a" stroke-width="5"/><text x="190" y="90" text-anchor="middle" font-size="64" font-weight="900" fill="#fff" font-family="Nunito">${n}</text></svg>`));
  const body=el('div','');body.style.cssText='background:#fff7e6;border:5px solid #e6b86a;border-top:none;width:340px;padding:8px 0';h.append(body);
- pairs.forEach(([a,c,hide])=>{const r=el('div','');r.style.cssText='display:flex;justify-content:center;gap:0;border-bottom:3px solid #f0d6a3';
-  [a,c].forEach((v,i)=>{const cell=el('div','');cell.style.cssText='width:160px;height:66px;display:grid;place-items:center;font-size:46px;font-weight:900'+(i?';border-left:3px solid #f0d6a3':'');
-   if(hide===i){const s=el('button','slot','');s.style.cssText+=';width:56px;height:56px;font-size:36px';s.dataset.w=v;s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,[...Array(n+1).keys()],null,x=>{if(x===v){s.textContent=x;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})};cell.append(s);left++;all.push(s)}else cell.textContent=v;r.append(cell)});body.append(r)});
+ const CH=pairs.length>6?54:66;pairs.forEach(([a,c,hide])=>{const r=el('div','');r.style.cssText='display:flex;justify-content:center;gap:0;border-bottom:3px solid #f0d6a3';
+  [a,c].forEach((v,i)=>{const cell=el('div','');cell.style.cssText='width:160px;height:'+CH+'px;display:grid;place-items:center;font-size:46px;font-weight:900'+(i?';border-left:3px solid #f0d6a3':'');
+   if(hide===i){const s=el('button','slot','');s.style.cssText+=';width:'+(CH-10)+'px;height:'+(CH-10)+'px;font-size:34px';s.dataset.w=v;s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,[...Array(n+1).keys()],null,x=>{if(x===v){s.textContent=x;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})};cell.append(s);left++;all.push(s)}else cell.textContent=v;r.append(cell)});body.append(r)});
  b.append(h);T.reveal=()=>all.forEach(s=>{if(!s.dataset.ok){s.textContent=s.dataset.w;s.style.color='#e0a000'}})},
 /* бірнеше сан үйі бір қатарда (ортақ санауыш) */
 houseRow(b,T,list){b.style.justifyContent='center';b.style.alignItems='flex-end';b.style.gap='34px';let left=0;const all=[];const cols=['#ef7f6f','#5aa9e6','#f39c4a','#b99aa0','#86c47a','#b28bff'];
