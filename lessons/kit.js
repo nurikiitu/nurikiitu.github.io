@@ -57,6 +57,14 @@ house(b,T,{n,pairs}){col(b,10,'center');let left=0;const all=[];
   [a,c].forEach((v,i)=>{const cell=el('div','');cell.style.cssText='width:160px;height:66px;display:grid;place-items:center;font-size:46px;font-weight:900'+(i?';border-left:3px solid #f0d6a3':'');
    if(hide===i){const s=el('button','slot','');s.style.cssText+=';width:56px;height:56px;font-size:36px';s.dataset.w=v;s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,[...Array(n+1).keys()],null,x=>{if(x===v){s.textContent=x;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})};cell.append(s);left++;all.push(s)}else cell.textContent=v;r.append(cell)});body.append(r)});
  b.append(h);T.reveal=()=>all.forEach(s=>{if(!s.dataset.ok){s.textContent=s.dataset.w;s.style.color='#e0a000'}})},
+/* бірнеше сан үйі бір қатарда (ортақ санауыш) */
+houseRow(b,T,list){b.style.justifyContent='center';b.style.alignItems='flex-end';b.style.gap='34px';let left=0;const all=[];const cols=['#ef7f6f','#5aa9e6','#f39c4a','#b99aa0','#86c47a','#b28bff'];
+ list.forEach(({n,pairs},hi)=>{const h=el('div','');h.style.cssText='display:flex;flex-direction:column;align-items:center';const W=Math.max(170,60*2+40);
+  h.append(el('div','',`<svg width="${W+20}" height="80" viewBox="0 0 ${W+20} 80"><path d="M4 76 L${(W+20)/2} 6 L${W+16} 76Z" fill="${cols[hi%6]}" stroke="#0003" stroke-width="4"/><circle cx="${(W+20)/2}" cy="52" r="20" fill="#fde047"/><text x="${(W+20)/2}" y="64" text-anchor="middle" font-size="32" font-weight="900" font-family="Nunito">${n}</text></svg>`));
+  const body=el('div','');body.style.cssText=`background:${cols[hi%6]}33;border:4px solid ${cols[hi%6]};border-top:none;width:${W}px;padding:6px 0`;h.append(body);
+  pairs.forEach(([a,c,hide])=>{const r=el('div','');r.style.cssText='display:flex;justify-content:center;gap:10px;margin:6px 0';[a,c].forEach((v,i)=>{const cell=el('div','');cell.style.cssText='width:66px;height:62px;background:#fff;border-radius:10px;display:grid;place-items:center;font-size:40px;font-weight:900';
+   if(hide===i){const s=el('button','slot','');s.style.cssText+=';width:58px;height:54px;font-size:34px';s.dataset.w=v;left++;all.push(s);s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,[...Array(n+1).keys()],null,x=>{if(x===v){s.textContent=x;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})};cell.append(s)}else cell.textContent=v;r.append(cell)});body.append(r)});b.append(h)});
+ T.reveal=()=>all.forEach(s=>{if(!s.dataset.ok){s.textContent=s.dataset.w;s.style.color='#e0a000'}})},
 /* реттік тізбек: бос орындарды толтыр */
 seq(b,T,{rounds,title}){col(b,14);const st=prog(b,rounds.length);const q=el('div','qline');const row=el('div','');row.style.cssText='display:flex;gap:10px;flex-wrap:wrap;justify-content:center';b.append(q,row);let k=0,sel=null,left=0;
  const cards=el('div','ncards');b.append(cards);
