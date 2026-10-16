@@ -238,3 +238,12 @@ K.fillGroups=function(b,T,{groups,vals=[0,1,2,3,4,5,6,7,8,9,10],signs=['>','<','
  const slots=b.querySelectorAll('.slot');let left=slots.length;
  slots.forEach(s=>{const isS=['>','<','=','+','-'].includes(s.dataset.w);s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,isS?signs:vals,isS?SG:null,v=>{if(String(v)===s.dataset.w){s.innerHTML=isS?SG(v):v;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})}});
  T.reveal=()=>slots.forEach(s=>{if(!s.dataset.ok){s.innerHTML=SG(s.dataset.w);s.style.color='#e0a000'}})};
+
+/* тізбек: сан → (+1) → ? → ... */
+K.chain=function(b,T,{chains,vals=[0,1,2,3,4,5,6,7,8,9,10]}){col(b,40,'center');let left=0;const all=[];
+ chains.forEach(([start,ops])=>{const r=el('div','');r.style.cssText='display:flex;align-items:center;gap:4px';let v=start;
+  const circ=x=>{const c=el('div','');c.style.cssText='width:96px;height:96px;border-radius:50%;border:5px solid #43a047;display:grid;place-items:center;font-size:46px;font-weight:900;background:#fff';if(x!=null)c.textContent=x;return c};
+  r.append(circ(start));ops.forEach((o,i)=>{v+=o;r.append(el('div','',`<div style="text-align:center;font-size:28px;font-weight:900;color:${o>0?'#e53935':'#1e63d6'}">${o>0?'+':'−'}${Math.abs(o)}</div><div style="font-size:34px;color:#888;margin-top:-10px">⟶</div>`));
+   const c=circ();if(i===ops.length-1)c.style.borderColor='#e53935';const s=el('button','slot','');s.style.cssText+=';width:70px;height:70px;font-size:40px;border:none';s.dataset.w=v;c.append(s);left++;all.push(s);
+   s.onclick=()=>{if(s.dataset.ok)return;T.picker(s,vals,null,x=>{if(String(x)===s.dataset.w){s.textContent=x;s.classList.add('f');s.dataset.ok=1;T.ok(s);if(--left===0)T.done()}else T.bad(s)})};r.append(c)});b.append(r)});
+ T.reveal=()=>all.forEach(s=>{if(!s.dataset.ok){s.textContent=s.dataset.w;s.style.color='#e0a000'}})};
