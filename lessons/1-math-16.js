@@ -1,13 +1,14 @@
 /* 1-сынып · Математика · 16-сабақ · 8 саны және цифры (оқулық 36–37-бет) */
 (function(){
 const V=['🍎','🍐','🍌','🍉','🍅','🥒','🥕','🍆'];
+const PL='<svg width="1em" height="0.7em" viewBox="0 0 100 70" style="vertical-align:middle"><ellipse cx="50" cy="35" rx="48" ry="32" fill="#eceff1" stroke="#90a4ae" stroke-width="4"/><ellipse cx="50" cy="35" rx="30" ry="19" fill="#fff" stroke="#cfd8dc" stroke-width="3"/></svg>';
 const ex=t=>`<span style="font-size:40px;font-weight:900">${t}</span>`;
 LESSON({
 goal:'8 саны және цифрымен танысасың.',
 introExtra(w,T){K.introNum(w,T,8,'🍓')},
 book:[
 {num:1,title:'Сурет бойынша «неше», «реті бойынша нешінші» сөздерімен сұрақтар құрастыр. Үстелдегі әртүрлі заттарды сана. Оларды салыстыр.',build(b,T){
- const items=[...V.map((e,i)=>({e,x:8+i*12,y:12,s:54})),...[0,1,2,3,4,5,6,7].map(i=>({e:'🥏',x:22+(i%4)*15,y:i<4?52:74,s:46})),...[0,1,2,3,4,5].map(i=>({e:'☕',x:30+(i%3)*12,y:i<3?60:66,s:34})),
+ const items=[...V.map((e,i)=>({e,x:8+i*12,y:12,s:54})),...[0,1,2,3,4,5,6,7].map(i=>({e:PL,x:22+(i%4)*15,y:i<4?52:74,s:46})),...[0,1,2,3,4,5].map(i=>({e:'☕',x:30+(i%3)*12,y:i<3?60:66,s:34})),
   {e:kid(0,'#1e2a8a','#3e2723',0,0,1),x:8,y:66},{e:kid(1,'#29b6f6','#3e2723',0,0,1),x:92,y:66}];
  const s=T.scene(b,{w:900,h:540,bg:'linear-gradient(#7fb7c9 0 70%,#b0bec5 70%)',items});
  s.insertAdjacentHTML('afterbegin','<div style="position:absolute;left:16%;top:46%;width:68%;height:40%;background:#f5c26b;border-radius:14px;box-shadow:0 14px 0 #c58b3c"></div>');
@@ -19,7 +20,7 @@ book:[
 {num:2,label:'ӨЗІНДІК ЖҰМЫС',k:'self',title:'Әр суретке сәйкес сандардың қосындысын немесе айырмасын таңда. Есепте.',build(b,T){
  let parts=0;const T2=Object.create(T);T2.done=()=>{if(++parts===2)T.done()};const R=[];
  K.match(b,T2,{title:'Суретті бас, сосын оның өрнегін бас',cw:400,ch:150,gap:20,
-  L:[{h:`<div style="font-size:44px;line-height:1.1"><span style="filter:hue-rotate(180deg)">☕☕☕</span><br>☕☕☕☕☕</div>`,k:'a'},{h:`<div style="font-size:44px;line-height:1.1">🥏🥏<br><span style="filter:hue-rotate(320deg) saturate(3)">🥏🥏🥏🥏🥏🥏</span></div>`,k:'b'},{h:`<div style="font-size:44px;line-height:1.1">🥄🥄🥄🥄<br>🍴🍴🍴🍴</div>`,k:'c'}],
+  L:[{h:`<div style="font-size:44px;line-height:1.1"><span style="filter:hue-rotate(180deg)">☕☕☕</span><br>☕☕☕☕☕</div>`,k:'a'},{h:`<div style="font-size:44px;line-height:1.1">${PL.repeat(2)}<br><span style="filter:hue-rotate(320deg) saturate(4) sepia(.6)">${PL.repeat(6)}</span></div>`,k:'b'},{h:`<div style="font-size:44px;line-height:1.1">🥄🥄🥄🥄<br>🍴🍴🍴🍴</div>`,k:'c'}],
   R:[{h:ex('3 + 5 = 8'),k:'a'},{h:ex('2 + 6 = 8'),k:'b'},{h:ex('4 + 4 = 8'),k:'c'}]});R.push(T2.reveal);
  const r=el('div','');r.style.cssText='margin-top:8px';b.append(r);
  K.fill(r,T2,{fs:40,vals:[0,1,2,3,4,5,6,7,8],rows:[[8,'-',6,'=',null],[8,'-',3,'=',null],[8,'-',2,'=',null],[8,'-',5,'=',null],[8,'-',4,'=',null]],ans:[[2],[5],[6],[3],[4]]});
@@ -28,7 +29,7 @@ book:[
 {num:3,label:'ЖҰПТЫҚ ЖҰМЫС',k:'pair',title:'Салыстыр.',build(b,T){
  const g=(e,n)=>`<div class="grp" style="width:200px;font-size:42px">${e.repeat(n)}</div>`;
  K.fill(b,T,{fs:54,vals:[0,1,2,3,4,5,6,7,8],rows:[[null,'s',null],[null,'s',null],[null,'s',null]],ans:[[8,'>',3],[3,'<',4],[4,'=',4]],
-  pics:[g('🥄',8)+g('☕',3),g('🥏',3)+g('🥣',4),g('🥣',4)+g('🥏',4)].map(x=>`<div style="display:flex;gap:10px;margin-right:16px">${x}</div>`)})}},
+  pics:[g('🥄',8)+g('☕',3),g(PL,3)+g('🥣',4),g('🥣',4)+g(PL,4)].map(x=>`<div style="display:flex;gap:10px;margin-right:16px">${x}</div>`)})}},
 {num:4,label:'СЕН ЗЕРТТЕУШІСІҢ',k:'res',title:'Тізбек бойынша есепте.',build(b,T){K.chain(b,T,{chains:[[3,[1,-1,2,1]],[4,[-1,-1,2,1,-2]]]})}}
 ],
 extra:[
