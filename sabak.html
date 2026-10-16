@@ -85,6 +85,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .nc:active{transform:translateY(3px)}
 .nc.sm{width:66px;height:72px;font-size:40px;border-radius:13px}
 .opt{min-width:90px;height:84px;padding:0 24px;border-radius:20px;background:#fff;border:3px solid var(--line);box-shadow:0 5px 0 var(--line);font-size:30px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.tallopt .opt{height:auto;min-height:84px;padding:14px 24px}
 .opt:active{transform:translateY(3px);box-shadow:0 2px 0 var(--line)}
 .ok{box-shadow:0 0 0 5px var(--ok),0 0 24px #22b07d88!important;animation:pop .35s}
 .bad{animation:shake .45s;box-shadow:0 0 0 5px var(--bad)!important}
@@ -187,7 +188,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
  <button class="ans" id="ans">👁 Жауабы</button>
  <button class="nav nx" id="next"><span>Келесі</span> ›</button>
 </div>
-<script src="data.js?v=10"></script>
+<script src="data.js?v=11"></script>
 <script>
 /* ====== негізгі көмекшілер ====== */
 const $=s=>document.querySelector(s);
@@ -397,8 +398,8 @@ addEventListener('resize',()=>{if(BD.classList.contains('on'))bsize()});
 
 /* ====== жүктеу ====== */
 fit();
-const kit=document.createElement('script');kit.src='lessons/kit.js?v=10';kit.onload=()=>document.body.append(sc);document.body.append(kit);
-const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=10`;
+const kit=document.createElement('script');kit.src='lessons/kit.js?v=11';kit.onload=()=>document.body.append(sc);document.body.append(kit);
+const sc=document.createElement('script');sc.src=`lessons/${G}-${SB}-${N}.js?v=11`;
 sc.onerror=()=>{$('#stage').innerHTML=`<div class="intro"><div class="no">${N}</div><h1>${LES?LES.t:''}</h1><div style="font-size:90px">🛠️</div><div class="big mut">Сабақ дайындалуда</div></div>`;
  document.querySelector('.bot').style.display='none';$('#main').style.bottom='0';fit()};
 
