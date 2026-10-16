@@ -14,15 +14,17 @@ const K={
 /* сұрақтар тізбегі (жай орауыш) */
 series(b,T,items,o={}){col(b,14,'center');T.series(b,items,o)},
 /* екі жақты сәйкестендіру: сол жақты бас, сосын оң жақты */
-match(b,T,{L,R,title,cw=200,ch=150,gap=26}){col(b,10);b.style.position='relative';if(title)b.append(el('div','mut',title));
+match(b,T,{L,R,title,cw=200,ch=150,gap=26,side=false,cw2}){col(b,10);b.style.position='relative';if(title)b.append(el('div','mut',title));
  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2';b.append(svg);
- const top=el('div','');top.style.cssText=`display:flex;gap:${gap}px;flex-wrap:wrap;justify-content:center`;const bot=el('div','');bot.style.cssText=top.style.cssText;b.append(top,bot);
+ const top=el('div','');top.style.cssText=`display:flex;gap:${gap}px;flex-wrap:wrap;justify-content:center`;const bot=el('div','');bot.style.cssText=top.style.cssText;
+ if(side){top.style.flexDirection=bot.style.flexDirection='column';const wr=el('div','');wr.style.cssText='display:flex;gap:220px;align-items:center';wr.append(top,bot);b.append(wr)}else b.append(top,bot);
  let sel=null,left=L.length;const A=[],B=[];
  L.forEach(it=>{const c=cellBtn(it.h,`width:${cw}px;height:${ch}px`);c.dataset.k=it.k;c.onclick=()=>{if(c.dataset.ok)return;A.forEach(x=>x.style.outline='');sel=c;c.style.outline='5px solid #ffc531';beep('tap')};top.append(c);A.push(c)});
- shuffle(R).forEach(it=>{const c=cellBtn(it.h,`width:${cw}px;height:${ch}px`);c.dataset.k=it.k;c.onclick=()=>{if(c.dataset.ok)return;if(!sel){T.bad(c);return}
+ shuffle(R).forEach(it=>{const c=cellBtn(it.h,`width:${cw2||cw}px;height:${ch}px`);c.dataset.k=it.k;c.onclick=()=>{if(c.dataset.ok)return;if(!sel){T.bad(c);return}
   if(sel.dataset.k===c.dataset.k){T.ok(c);link(sel,c);sel=null;if(--left===0)T.done()}else T.bad(c)};bot.append(c);B.push(c)});
  function link(a,c){a.dataset.ok=c.dataset.ok=1;a.style.outline='';a.style.borderColor=c.style.borderColor='#22b07d';const Rr=b.getBoundingClientRect(),P=a.getBoundingClientRect(),Q=c.getBoundingClientRect();
-  const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',(P.left+P.width/2-Rr.left)/SCALE);l.setAttribute('y1',(P.bottom-Rr.top)/SCALE);l.setAttribute('x2',(Q.left+Q.width/2-Rr.left)/SCALE);l.setAttribute('y2',(Q.top-Rr.top)/SCALE);
+  const l=document.createElementNS('http://www.w3.org/2000/svg','line');if(side){l.setAttribute('x1',(P.right-Rr.left)/SCALE);l.setAttribute('y1',(P.top+P.height/2-Rr.top)/SCALE);l.setAttribute('x2',(Q.left-Rr.left)/SCALE);l.setAttribute('y2',(Q.top+Q.height/2-Rr.top)/SCALE)}
+  else{l.setAttribute('x1',(P.left+P.width/2-Rr.left)/SCALE);l.setAttribute('y1',(P.bottom-Rr.top)/SCALE);l.setAttribute('x2',(Q.left+Q.width/2-Rr.left)/SCALE);l.setAttribute('y2',(Q.top-Rr.top)/SCALE)}
   l.setAttribute('stroke','#22b07d');l.setAttribute('stroke-width','7');l.setAttribute('stroke-linecap','round');svg.append(l)}
  T.reveal=()=>{A.forEach(a=>{if(a.dataset.ok)return;const c=B.find(x=>!x.dataset.ok&&x.dataset.k===a.dataset.k);if(c){link(a,c);left--}});if(left<=0)T.done()}},
 /* топтарға бөлу: затты бас, сосын қорапты бас */
