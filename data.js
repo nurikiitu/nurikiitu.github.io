@@ -23,5 +23,5 @@ const DATA={
    {name:'Менің отбасым және достарым. Бізді қоршаған әлем',ls:mk(L1Q2,33)},
    {name:'',ls:[]},{name:'',ls:[]}]}
 };
-const READY=new Set(['1/math/1','1/math/2','1/math/3','1/math/4','1/math/5','1/math/6','1/math/7','1/math/8','1/math/9','1/math/10','1/math/11','1/math/12','1/math/13','1/math/14','1/math/15','1/math/16','1/math/17','1/math/18','1/math/19','1/math/20','1/math/21','1/math/22','1/math/23','1/math/24','1/math/25','1/math/26','1/math/27']); // мысалы '1/math/1'
+const READY=new Set(['1/math/1','1/math/2','1/math/3','1/math/4','1/math/5','1/math/6','1/math/7','1/math/8','1/math/9','1/math/10','1/math/11','1/math/12','1/math/13','1/math/14','1/math/15','1/math/16','1/math/17','1/math/18','1/math/19','1/math/20','1/math/21','1/math/22','1/math/23','1/math/24','1/math/25','1/math/26','1/math/27','1/math/28']); // мысалы '1/math/1'
 
