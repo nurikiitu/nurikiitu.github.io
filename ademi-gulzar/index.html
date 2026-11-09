@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Әдемі гүлзар</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Onest:wght@400;500;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* layout: a field journal — grid-paper pages held between two night-garden panels */
+  --ink: #0F2219;
+  --night: #0F2219;
+  --night-2: #1F4A33;
+  --paper: #FBF8F1;
+  --shell: #F3E7D3;
+  --crimson: #C8213F;
+  --pink: #F7A8B8;
+  --leaf: #3F7A2E;
+  --muted: #56655B;
+  --on-night: #F6F2EA;
+  --on-night-muted: rgba(246, 242, 234, 0.74);
+  --grid: rgba(31, 74, 51, 0.075);
+  --display: 'Rubik', Arial, sans-serif;
+  --body: 'Onest', 'Segoe UI', Arial, sans-serif;
+  --hand: 'Caveat', 'Segoe Print', 'Comic Sans MS', cursive;
+  --radius: 18px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); overflow-x: clip; }
+img { max-width: 100%; height: auto; display: block; }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--crimson); outline-offset: 3px; border-radius: 6px; }
+.night :focus-visible { outline-color: var(--pink); }
+.wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+.hand { font-family: var(--hand); font-weight: 700; }
+.paper { background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px; }
+.night { background: radial-gradient(circle at 85% 8%, var(--night-2) 0%, var(--night) 58%); color: var(--on-night); color-scheme: dark; }
+.sec { padding: 88px 0; }
+.eyebrow { font: 700 13px/1 var(--body); letter-spacing: 0.22em; text-transform: uppercase; color: var(--crimson); margin-bottom: 14px; }
+.night .eyebrow { color: var(--pink); }
+h2 { font-size: clamp(1.9rem, 1.1rem + 2.4vw, 2.9rem); font-weight: 800; line-height: 1.08; margin-bottom: 28px; }
+h3 { font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
+.lead { font-size: 1.2rem; max-width: 60ch; }
+.muted { color: var(--muted); }
+.night .muted { color: var(--on-night-muted); }
+.ic { width: 1em; height: 1em; fill: currentColor; flex: none; }
+.badge { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; flex: none; font-size: 22px; }
+.badge.green { background: #E6F0DF; color: var(--leaf); }
+.badge.pink { background: #FBE1E6; color: var(--crimson); }
+.badge.red { background: var(--crimson); color: #fff; }
+.badge.soft { background: var(--pink); color: var(--ink); }
+
+/* ---------- nav ---------- */
+.nav { position: sticky; top: 0; z-index: 20; background: rgba(15, 34, 25, 0.86); backdrop-filter: blur(10px); color: var(--on-night); }
+.nav .wrap { display: flex; align-items: center; gap: 24px; height: 58px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 800 18px/1 var(--display); text-decoration: none; white-space: nowrap; }
+.brand .ic { color: var(--pink); font-size: 20px; }
+.nav ul { display: flex; gap: 6px; list-style: none; margin: 0 0 0 auto; padding: 0; overflow-x: auto; scrollbar-width: none; }
+.nav ul::-webkit-scrollbar { display: none; }
+.nav a.link { display: block; padding: 8px 12px; border-radius: 999px; text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap; color: var(--on-night-muted); }
+.nav a.link:hover { background: rgba(255, 255, 255, 0.08); color: var(--on-night); }
+
+/* ---------- hero ---------- */
+.hero { position: relative; overflow: hidden; padding: 64px 0 80px; }
+.petals { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 8px; background: var(--crimson); color: #fff; font: 700 13px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; padding: 10px 16px; border-radius: 999px; }
+.hero h1 { font-size: clamp(2rem, 1.1rem + 3vw, 3.4rem); font-weight: 800; line-height: 1.06; margin: 22px 0 6px; }
+.hero-sub { font-size: clamp(2.5rem, 1.3rem + 4.2vw, 4.6rem); line-height: 0.95; color: var(--pink); transform: rotate(-2deg); transform-origin: left; margin: 10px 0 22px; }
+.hero .lead { color: var(--on-night-muted); }
+.people { display: flex; flex-wrap: wrap; gap: 18px 36px; margin: 30px 0 0; }
+.people dt { font: 700 12px/1 var(--body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); margin-bottom: 8px; }
+.people dd { margin: 0; font-weight: 700; font-size: 18px; line-height: 1.35; }
+.hero-photo { margin: 0; position: relative; justify-self: center; width: min(420px, 100%); }
+.hero-photo img { width: 100%; aspect-ratio: 771 / 900; object-fit: cover; border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%; border: 8px solid #fff; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45); }
+.hero-photo figcaption { position: absolute; left: -6px; bottom: 26px; background: var(--paper); color: var(--ink); font-size: 24px; padding: 4px 14px 6px; border-radius: 8px; transform: rotate(-4deg); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); }
+.load > * { animation: rise 0.8s cubic-bezier(.2, .8, .2, 1) both; }
+.load > *:nth-child(2) { animation-delay: 0.08s; } .load > *:nth-child(3) { animation-delay: 0.16s; }
+.load > *:nth-child(4) { animation-delay: 0.24s; } .load > *:nth-child(5) { animation-delay: 0.32s; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.hero-photo { animation: pop 1s 0.2s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes pop { from { opacity: 0; transform: scale(0.92) rotate(-3deg); } to { opacity: 1; transform: none; } }
+
+/* ---------- goal ---------- */
+.two { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+.statement { font: 800 clamp(1.5rem, 1rem + 1.6vw, 2.2rem)/1.2 var(--display); max-width: 22ch; text-wrap: balance; }
+.statement mark { background: linear-gradient(transparent 58%, rgba(247, 168, 184, 0.7) 58%); color: inherit; }
+.notes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 34px; }
+.note { position: relative; padding: 24px 22px 22px; border-radius: 6px; box-shadow: 0 14px 30px rgba(15, 34, 25, 0.12); display: grid; gap: 10px; align-content: start; }
+.note::before { content: ""; position: absolute; top: -11px; left: 50%; width: 86px; height: 24px; transform: translateX(-50%) rotate(-3deg); background: rgba(247, 168, 184, 0.6); }
+.note.n1 { background: #EEF5E8; transform: rotate(-1.2deg); }
+.note.n2 { background: #FFF3F5; transform: rotate(1deg); }
+.note .badge { width: 44px; height: 44px; font-size: 19px; }
+.goal-photo { margin: 0; justify-self: center; width: min(420px, 100%); position: relative; }
+.goal-photo::after { content: ""; position: absolute; inset: 6% -4% -4% 6%; z-index: -1; border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%; background: var(--shell); }
+.goal-photo img { filter: drop-shadow(0 22px 34px rgba(15, 34, 25, 0.22)); }
+
+/* ---------- preparation / egg ---------- */
+.prep { align-items: start; }
+.egg-col { display: grid; justify-items: center; gap: 14px; position: relative; }
+.egg-col::before { content: ""; position: absolute; inset: -4% 6% 4% 6%; border-radius: 50%; background: var(--shell); z-index: 0; }
+.egg-stage { position: relative; z-index: 1; width: min(300px, 68vw); aspect-ratio: 720 / 1180; border: 0; padding: 0; background: none; cursor: pointer; }
+.egg-stage img { position: absolute; left: 0; top: 0; width: 100%; height: auto; pointer-events: none; user-select: none; }
+.egg-stage .shadow { top: 69.07%; }
+.egg-stage .heap { left: 5.56%; top: 76.27%; width: 88.9%; opacity: 0; transform-origin: 50% 100%; }
+.egg-stage .crack, .egg-stage .top, .egg-stage .bot, .egg-stage .frag { opacity: 0; }
+.egg-stage .whole { transform-origin: 50% 96%; }
+.egg-hint { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; font-size: 26px; color: var(--crimson); }
+.egg-hint .ic { font-size: 22px; animation: tap 1.6s ease-in-out infinite; }
+@keyframes tap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: s; }
+.steps li { display: flex; align-items: center; gap: 16px; font: 700 1.2rem/1.3 var(--display); }
+.steps li::after { counter-increment: s; content: counter(s); margin-left: auto; font: 700 28px/1 var(--hand); color: var(--crimson); }
+.why { display: flex; gap: 22px; align-items: center; margin-top: 30px; padding: 22px; background: #fff; border-radius: var(--radius); box-shadow: 0 16px 36px rgba(15, 34, 25, 0.1); }
+.ca { flex: none; width: 112px; aspect-ratio: 1; border-radius: 14px; background: var(--crimson); color: #fff; display: grid; place-items: center; align-content: center; gap: 2px; font-weight: 700; box-shadow: 0 10px 22px rgba(200, 33, 63, 0.3); }
+.ca small { font-size: 13px; opacity: 0.85; }
+.ca b { font: 800 46px/1 var(--display); }
+.why .eyebrow { margin-bottom: 8px; font-size: 12px; }
+.why-main { font: 700 1.15rem/1.35 var(--display); margin-bottom: 6px; }
+.facts { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 10px; }
+.facts li { display: flex; gap: 12px; align-items: baseline; }
+.facts .ic { color: var(--leaf); transform: translateY(3px); }
+
+/* ---------- experiment ---------- */
+.soils { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.soil { position: relative; background: #fff; border-radius: var(--radius); padding: 12px 12px 20px; box-shadow: 0 16px 34px rgba(15, 34, 25, 0.1); display: grid; gap: 14px; border: 2px solid transparent; }
+.soil.egg { border-color: var(--crimson); }
+.soil img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; }
+.soil .num { position: absolute; top: 2px; left: 2px; width: 46px; height: 46px; border-radius: 50%; background: var(--crimson); color: #fff; border: 3px solid #fff; display: grid; place-items: center; font: 800 20px/1 var(--display); transform: translate(-8px, -8px); box-shadow: 0 6px 14px rgba(200, 33, 63, 0.35); }
+.soil h3 { padding-inline: 8px; }
+.soil p { padding-inline: 8px; color: var(--muted); }
+.seeded { display: flex; align-items: center; gap: 14px; margin-top: 30px; font: 700 1.3rem/1.3 var(--display); }
+.guess { margin-top: 34px; padding: 26px; border-radius: var(--radius); background: var(--night); color: var(--on-night); display: grid; gap: 16px; }
+.guess h3 { font-size: 1.35rem; }
+.choices { display: flex; flex-wrap: wrap; gap: 10px; }
+.choice { font: 700 16px/1 var(--body); padding: 13px 18px; border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.3); background: transparent; color: var(--on-night); cursor: pointer; transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+.choice:hover { border-color: var(--pink); transform: translateY(-2px); }
+.choice[aria-pressed="true"] { background: var(--pink); border-color: var(--pink); color: var(--ink); }
+.guess-out { font: 700 26px/1.2 var(--hand); color: var(--pink); min-height: 1.2em; }
+.pol-head { margin: 76px 0 34px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 20px; }
+.pol-head h3 { font-size: clamp(1.5rem, 1rem + 1.4vw, 2rem); font-weight: 800; }
+.pol-head p { font-size: 26px; color: var(--crimson); }
+.polaroids { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
+.polaroid { position: relative; background: #fff; padding: 10px 10px 0; box-shadow: 0 18px 34px rgba(15, 34, 25, 0.16); transform: rotate(var(--rot)); transition: transform 0.3s; }
+.polaroid:hover { transform: rotate(0) translateY(-6px); }
+.polaroid::before { content: ""; position: absolute; top: -12px; left: 50%; width: 92px; height: 26px; transform: translateX(-50%) rotate(-2deg); background: rgba(247, 168, 184, 0.62); }
+.polaroid img { width: 100%; aspect-ratio: 616 / 700; object-fit: cover; }
+.polaroid .cap { font-size: 25px; text-align: center; padding: 8px 4px 2px; line-height: 1.1; }
+.polaroid .det { text-align: center; color: var(--muted); font-size: 14px; padding-bottom: 12px; }
+.polaroid .step { position: absolute; top: -18px; right: -12px; width: 40px; height: 40px; border-radius: 50%; background: var(--crimson); color: #fff; display: grid; place-items: center; font: 800 18px/1 var(--display); border: 3px solid #fff; }
+
+/* ---------- plan / observation (night) ---------- */
+.questions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+.q { display: grid; gap: 14px; align-content: start; padding: 22px; border-radius: var(--radius); background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); }
+.q h3 { font-size: 1.2rem; }
+.compare { display: flex; gap: 16px; align-items: center; margin-top: 22px; padding: 20px 22px; border-radius: var(--radius); background: var(--crimson); font: 700 1.15rem/1.35 var(--display); }
+.compare .badge { background: rgba(255, 255, 255, 0.18); color: #fff; }
+.year { margin-top: 64px; }
+.year h3 { font-size: clamp(1.4rem, 1rem + 1.2vw, 1.8rem); font-weight: 800; margin-bottom: 26px; }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; position: relative; }
+.timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 2px; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 8px, transparent 8px 14px); }
+.timeline li { position: relative; padding: 40px 12px 0 0; display: grid; gap: 6px; align-content: start; }
+.timeline li::before { content: ""; position: absolute; top: 4px; left: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--night); border: 3px solid rgba(255, 255, 255, 0.45); }
+.timeline li.done::before { background: var(--pink); border-color: var(--pink); }
+.timeline li.now::before { background: var(--crimson); border-color: #fff; box-shadow: 0 0 0 6px rgba(200, 33, 63, 0.35); }
+.timeline time { font: 700 15px/1.2 var(--display); }
+.timeline p { font-size: 14px; color: var(--on-night-muted); line-height: 1.45; }
+.status { justify-self: start; font: 700 11px/1 var(--body); letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); color: var(--on-night-muted); }
+li.done .status { background: rgba(247, 168, 184, 0.2); color: var(--pink); }
+li.now .status { background: var(--crimson); color: #fff; }
+
+/* ---------- gallery ---------- */
+.gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 210px; gap: 14px; }
+.gallery button { position: relative; padding: 0; border: 0; border-radius: 14px; overflow: hidden; cursor: zoom-in; background: var(--shell); }
+.gallery button.wide { grid-column: span 2; }
+.gallery button.tall { grid-row: span 2; }
+.gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.gallery button:hover img { transform: scale(1.05); }
+.gallery span { position: absolute; left: 10px; bottom: 10px; padding: 6px 11px; border-radius: 999px; background: rgba(15, 34, 25, 0.78); color: #fff; font: 700 13px/1 var(--body); }
+.lb { position: fixed; inset: 0; z-index: 50; background: rgba(8, 18, 13, 0.92); display: grid; place-items: center; padding: 20px; }
+.lb[hidden] { display: none; }
+.lb figure { margin: 0; display: grid; gap: 10px; justify-items: center; max-width: min(1000px, 100%); }
+.lb img { max-height: 78vh; width: auto; border-radius: 12px; }
+.lb figcaption { color: var(--pink); font-size: 30px; }
+.lb button { position: absolute; width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 20px; display: grid; place-items: center; cursor: pointer; }
+.lb .close { top: 18px; right: 18px; }
+.lb .prev { left: 18px; top: 50%; }
+.lb .next { right: 18px; top: 50%; }
+
+/* ---------- result ---------- */
+.results { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
+.results li { display: flex; gap: 16px; align-items: center; font: 700 1.2rem/1.35 var(--display); }
+.quote { margin-top: 34px; font-size: clamp(2rem, 1.2rem + 2.4vw, 3rem); line-height: 1.05; color: var(--crimson); transform: rotate(-1.5deg); max-width: 20ch; }
+.result-photo { margin: 0; position: relative; padding: 12px; background: #fff; box-shadow: 0 22px 44px rgba(15, 34, 25, 0.18); transform: rotate(2deg); justify-self: center; width: min(420px, 100%); }
+.result-photo::before { content: ""; position: absolute; top: -12px; left: 50%; width: 100px; height: 26px; transform: translateX(-50%) rotate(3deg); background: rgba(247, 168, 184, 0.62); }
+.result-photo img { width: 100%; aspect-ratio: 776 / 900; object-fit: cover; }
+
+/* ---------- finale ---------- */
+.finale { position: relative; overflow: hidden; padding: 96px 0 0; background: var(--night); color: var(--on-night); }
+.finale-bg { position: absolute; inset: 0; background: linear-gradient(90deg, var(--night) 0%, rgba(15, 34, 25, 0.9) 42%, rgba(15, 34, 25, 0.25) 100%), url("img/finale.jpg") right center / cover no-repeat; }
+.finale .wrap { position: relative; }
+.poem { margin: 22px 0 0; font: 800 clamp(1.7rem, 1rem + 2.4vw, 2.8rem)/1.3 var(--display); }
+.poem span { display: block; }
+.poem span:nth-child(even) { color: var(--pink); }
+.thanks { font-size: clamp(4rem, 2rem + 8vw, 8rem); line-height: 1; margin: 30px 0 70px; background: linear-gradient(90deg, var(--pink), #FFD6A5); -webkit-background-clip: text; background-clip: text; color: transparent; transform: rotate(-3deg); transform-origin: left; display: inline-block; }
+footer { position: relative; border-top: 1px solid rgba(255, 255, 255, 0.14); padding: 26px 0 34px; color: var(--on-night-muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 30px; justify-content: space-between; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 920px) {
+  .hero-grid, .two { grid-template-columns: 1fr; gap: 40px; }
+  .hero-photo { width: min(340px, 86%); }
+  .soils, .questions { grid-template-columns: 1fr; }
+  .polaroids { grid-template-columns: repeat(2, 1fr); }
+  .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+  .timeline { grid-template-columns: 1fr; gap: 22px; }
+  .timeline::before { left: 9px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0 8px, transparent 8px 14px); }
+  .timeline li { padding: 0 0 0 40px; }
+  .nav .wrap { gap: 12px; }
+}
+@media (max-width: 560px) {
+  .sec { padding: 64px 0; }
+  .notes { grid-template-columns: 1fr; }
+  .polaroids { grid-template-columns: 1fr 1fr; gap: 18px; }
+  .polaroid .cap { font-size: 20px; }
+  .why { flex-direction: column; align-items: flex-start; }
+  .brand span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-egg" viewBox="0 0 384 512"><path d="M192 0C86 0 0 214 0 320s86 192 192 192 192-86 192-192S298 0 192 0z"></path></symbol><symbol id="i-sun" viewBox="0 0 512 512"><path d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"></path></symbol><symbol id="i-mortar" viewBox="0 0 512 512"><path d="M501.54 60.91c17.22-17.22 12.51-46.25-9.27-57.14a35.696 35.696 0 0 0-37.37 3.37L251.09 160h151.37l99.08-99.09zM496 192H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h16c0 80.98 50.2 150.11 121.13 178.32-12.76 16.87-21.72 36.8-24.95 58.69-1.46 9.92 6.04 18.98 16.07 18.98h223.5c10.03 0 17.53-9.06 16.07-18.98-3.22-21.89-12.18-41.82-24.95-58.69C429.8 406.11 480 336.98 480 256h16c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z"></path></symbol><symbol id="i-seedling" viewBox="0 0 512 512"><path d="M64 96H0c0 123.7 100.3 224 224 224v144c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V320C288 196.3 187.7 96 64 96zm384-64c-84.2 0-157.4 46.5-195.7 115.2 27.7 30.2 48.2 66.9 59 107.6C424 243.1 512 147.9 512 32h-64z"></path></symbol><symbol id="i-ruler" viewBox="0 0 256 512"><path d="M168 416c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h88v-64h-88c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h88v-64h-88c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h88v-64h-88c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h88V32c0-17.67-14.33-32-32-32H32C14.33 0 0 14.33 0 32v448c0 17.67 14.33 32 32 32h192c17.67 0 32-14.33 32-32v-64h-88z"></path></symbol><symbol id="i-leaf" viewBox="0 0 576 512"><path d="M546.2 9.7c-5.6-12.5-21.6-13-28.3-1.2C486.9 62.4 431.4 96 368 96h-80C182 96 96 182 96 288c0 7 .8 13.7 1.5 20.5C161.3 262.8 253.4 224 384 224c8.8 0 16 7.2 16 16s-7.2 16-16 16C132.6 256 26 410.1 2.4 468c-6.6 16.3 1.2 34.9 17.5 41.6 16.4 6.8 35-1.1 41.8-17.3 1.5-3.6 20.9-47.9 71.9-90.6 32.4 43.9 94 85.8 174.9 77.2C465.5 467.5 576 326.7 576 154.3c0-50.2-10.8-102.2-29.8-144.6z"></path></symbol><symbol id="i-camera" viewBox="0 0 512 512"><path d="M512 144v288c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h88l12.3-32.9c7-18.7 24.9-31.1 44.9-31.1h125.5c20 0 37.9 12.4 44.9 31.1L376 96h88c26.5 0 48 21.5 48 48zM376 288c0-66.2-53.8-120-120-120s-120 53.8-120 120 53.8 120 120 120 120-53.8 120-120zm-32 0c0 48.5-39.5 88-88 88s-88-39.5-88-88 39.5-88 88-88 88 39.5 88 88z"></path></symbol><symbol id="i-book" viewBox="0 0 576 512"><path d="M542.22 32.05c-54.8 3.11-163.72 14.43-230.96 55.59-4.64 2.84-7.27 7.89-7.27 13.17v363.87c0 11.55 12.63 18.85 23.28 13.49 69.18-34.82 169.23-44.32 218.7-46.92 16.89-.89 30.02-14.43 30.02-30.66V62.75c.01-17.71-15.35-31.74-33.77-30.7zM264.73 87.64C197.5 46.48 88.58 35.17 33.78 32.05 15.36 31.01 0 45.04 0 62.75V400.6c0 16.24 13.13 29.78 30.02 30.66 49.49 2.6 149.59 12.11 218.77 46.95 10.62 5.35 23.21-1.94 23.21-13.46V100.63c0-5.29-2.62-10.14-7.27-12.99z"></path></symbol><symbol id="i-check" viewBox="0 0 512 512"><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></symbol><symbol id="i-recycle" viewBox="0 0 512 512"><path d="M184.561 261.903c3.232 13.997-12.123 24.635-24.068 17.168l-40.736-25.455-50.867 81.402C55.606 356.273 70.96 384 96.012 384H148c6.627 0 12 5.373 12 12v40c0 6.627-5.373 12-12 12H96.115c-75.334 0-121.302-83.048-81.408-146.88l50.822-81.388-40.725-25.448c-12.081-7.547-8.966-25.961 4.879-29.158l110.237-25.45c8.611-1.988 17.201 3.381 19.189 11.99l25.452 110.237zm98.561-182.915l41.289 66.076-40.74 25.457c-12.051 7.528-9 25.953 4.879 29.158l110.237 25.45c8.672 1.999 17.215-3.438 19.189-11.99l25.45-110.237c3.197-13.844-11.99-24.719-24.068-17.168l-40.687 25.424-41.263-66.082c-37.521-60.033-125.209-60.171-162.816 0l-17.963 28.766c-3.51 5.62-1.8 13.021 3.82 16.533l33.919 21.195c5.62 3.512 13.024 1.803 16.536-3.817l17.961-28.743c12.712-20.341 41.973-19.676 54.257-.022zM497.288 301.12l-27.515-44.065c-3.511-5.623-10.916-7.334-16.538-3.821l-33.861 21.159c-5.62 3.512-7.33 10.915-3.818 16.536l27.564 44.112c13.257 21.211-2.057 48.96-27.136 48.96H320V336.02c0-14.213-17.242-21.383-27.313-11.313l-80 79.981c-6.249 6.248-6.249 16.379 0 22.627l80 79.989C302.689 517.308 320 510.3 320 495.989V448h95.88c75.274 0 121.335-82.997 81.408-146.88z"></path></symbol><symbol id="i-bulb" viewBox="0 0 352 512"><path d="M96.06 454.35c.01 6.29 1.87 12.45 5.36 17.69l17.09 25.69a31.99 31.99 0 0 0 26.64 14.28h61.71a31.99 31.99 0 0 0 26.64-14.28l17.09-25.69a31.989 31.989 0 0 0 5.36-17.69l.04-38.35H96.01l.05 38.35zM0 176c0 44.37 16.45 84.85 43.56 115.78 16.52 18.85 42.36 58.23 52.21 91.45.04.26.07.52.11.78h160.24c.04-.26.07-.51.11-.78 9.85-33.22 35.69-72.6 52.21-91.45C335.55 260.85 352 220.37 352 176 352 78.61 272.91-.3 175.45 0 73.44.31 0 82.97 0 176zm176-80c-44.11 0-80 35.89-80 80 0 8.84-7.16 16-16 16s-16-7.16-16-16c0-61.76 50.24-112 112-112 8.84 0 16 7.16 16 16s-7.16 16-16 16z"></path></symbol><symbol id="i-target" viewBox="0 0 496 512"><path d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 432c-101.69 0-184-82.29-184-184 0-101.69 82.29-184 184-184 101.69 0 184 82.29 184 184 0 101.69-82.29 184-184 184zm0-312c-70.69 0-128 57.31-128 128s57.31 128 128 128 128-57.31 128-128-57.31-128-128-128zm0 192c-35.29 0-64-28.71-64-64s28.71-64 64-64 64 28.71 64 64-28.71 64-64 64z"></path></symbol><symbol id="i-close" viewBox="0 0 352 512"><path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></symbol><symbol id="i-left" viewBox="0 0 320 512"><path d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></symbol><symbol id="i-right" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></symbol><symbol id="i-hand" viewBox="0 0 448 512"><path d="M448 240v96c0 3.084-.356 6.159-1.063 9.162l-32 136C410.686 499.23 394.562 512 376 512H168a40.004 40.004 0 0 1-32.35-16.473l-127.997-176c-12.993-17.866-9.043-42.883 8.822-55.876 17.867-12.994 42.884-9.043 55.877 8.823L104 315.992V40c0-22.091 17.908-40 40-40s40 17.909 40 40v200h8v-40c0-22.091 17.908-40 40-40s40 17.909 40 40v40h8v-24c0-22.091 17.908-40 40-40s40 17.909 40 40v24h8c0-22.091 17.908-40 40-40s40 17.909 40 40zm-256 80h-8v96h8v-96zm88 0h-8v96h8v-96zm88 0h-8v96h8v-96z"></path></symbol><symbol id="i-users" viewBox="0 0 640 512"><path d="M96 224c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm448 0c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm32 32h-64c-17.6 0-33.5 7.1-45.1 18.6 40.3 22.1 68.9 62 75.1 109.4h66c17.7 0 32-14.3 32-32v-32c0-35.3-28.7-64-64-64zm-256 0c61.9 0 112-50.1 112-112S381.9 32 320 32 208 82.1 208 144s50.1 112 112 112zm76.8 32h-8.3c-20.8 10-43.9 16-68.5 16s-47.6-6-68.5-16h-8.3C179.6 288 128 339.6 128 403.2V432c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48v-28.8c0-63.6-51.6-115.2-115.2-115.2zm-223.7-13.4C161.5 263.1 145.6 256 128 256H64c-35.3 0-64 28.7-64 64v32c0 17.7 14.3 32 32 32h65.9c6.3-47.4 34.9-87.3 75.2-109.4z"></path></symbol><symbol id="i-tint" viewBox="0 0 352 512"><path d="M205.22 22.09c-7.94-28.78-49.44-30.12-58.44 0C100.01 179.85 0 222.72 0 333.91 0 432.35 78.72 512 176 512s176-79.65 176-178.09c0-111.75-99.79-153.34-146.78-311.82zM176 448c-61.75 0-112-50.25-112-112 0-8.84 7.16-16 16-16s16 7.16 16 16c0 44.11 35.89 80 80 80 8.84 0 16 7.16 16 16s-7.16 16-16 16z"></path></symbol><symbol id="i-redo" viewBox="0 0 512 512"><path d="M256.455 8c66.269.119 126.437 26.233 170.859 68.685l35.715-35.715C478.149 25.851 504 36.559 504 57.941V192c0 13.255-10.745 24-24 24H345.941c-21.382 0-32.09-25.851-16.971-40.971l41.75-41.75c-30.864-28.899-70.801-44.907-113.23-45.273-92.398-.798-170.283 73.977-169.484 169.442C88.764 348.009 162.184 424 256 424c41.127 0 79.997-14.678 110.629-41.556 4.743-4.161 11.906-3.908 16.368.553l39.662 39.662c4.872 4.872 4.631 12.815-.482 17.433C378.202 479.813 319.926 504 256 504 119.034 504 8.001 392.967 8 256.002 7.999 119.193 119.646 7.755 256.455 8z"></path></symbol></svg>
+
+<nav class="nav" aria-label="Бөлімдер">
+  <div class="wrap">
+    <a class="brand" href="#basy"><svg class="ic"><use href="#i-seedling"/></svg><span>Әдемі гүлзар</span></a>
+    <ul>
+      <li><a class="link" href="#maqsat">Мақсат</a></li>
+      <li><a class="link" href="#dayyndyq">Дайындық</a></li>
+      <li><a class="link" href="#tazhiribe">Тәжірибе</a></li>
+      <li><a class="link" href="#zhospar">Жоспар</a></li>
+      <li><a class="link" href="#suretter">Суреттер</a></li>
+      <li><a class="link" href="#natizhe">Нәтиже</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero night" id="basy">
+  <canvas class="petals" data-count="22" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="load">
+      <p class="pill">«Зерде» зерттеу жобасы · 3-сынып</p>
+      <h1>Жұмыртқа қабығының өсімдік өсіруге пайдасы</h1>
+      <p class="hand hero-sub">Кішкентай тұқымнан — әдемі гүлзарға дейін</p>
+      <p class="lead">Біз бұл жобаны мектеп ауласын әдемі гүлдермен безендіру және табиғатты қорғауға өз үлесімізді қосу үшін бастадық.</p>
+      <dl class="people">
+        <div><dt>Оқушылар</dt><dd>Әбдісәдір Даниял<br>Қасымбек Айасылым</dd></div>
+        <div><dt>Жетекшісі</dt><dd>Бердибаева К.Р.</dd></div>
+        <div><dt>Бағыты</dt><dd>Химия-биология<br>2026–2027 оқу жылы</dd></div>
+      </dl>
+    </div>
+    <figure class="hero-photo">
+      <img src="img/hero_flower.jpg" alt="Мектеп ауласындағы қызғылт хризантема гүлдері" width="771" height="900">
+      <figcaption class="hand">мектеп ауласындағы гүлдер</figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+<section class="paper sec" id="maqsat">
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow">01 · Мақсат</p>
+      <h2>Біздің мақсатымыз</h2>
+      <p class="statement">Дала гүлдерінің тұқымын <mark>үй жағдайында өсіріп</mark>, олардың өсуін бақылау.</p>
+      <div class="notes">
+        <article class="note n1">
+          <span class="badge green"><svg class="ic"><use href="#i-seedling"/></svg></span>
+          <h3>Көктемде</h3>
+          <p>Өсіп шыққан гүл көшеттерін мектеп ауласына отырғызамыз.</p>
+        </article>
+        <article class="note n2">
+          <span class="badge pink"><svg class="ic"><use href="#i-bulb"/></svg></span>
+          <h3>Сонымен қатар</h3>
+          <p>Топырақтың өсімдікке қалай әсер ететінін білгіміз келеді.</p>
+        </article>
+      </div>
+    </div>
+    <figure class="goal-photo">
+      <img src="img/goal_egg.webp" alt="Мектеп ауласына отырғызылған қызыл хризантемалар" width="702" height="920">
+    </figure>
+  </div>
+</section>
+
+<section class="paper sec" id="dayyndyq">
+  <div class="wrap">
+    <p class="eyebrow">02 · Дайындық</p>
+    <h2>Жұмыртқа қабығын дайындадық</h2>
+    <div class="two prep">
+      <div class="egg-col">
+        <button class="egg-stage" id="egg" type="button" aria-label="Жұмыртқаны ұнтаққа айналдыру">
+          <img class="shadow" src="img/egg_shadow.webp" alt="">
+          <img class="heap" src="img/heap.webp" alt="">
+          <img class="whole" src="img/egg_whole.webp" alt="">
+          <img class="crack" src="img/egg_crack.webp" alt="">
+          <img class="top" src="img/egg_top.webp" alt="">
+          <img class="bot" src="img/egg_bottom.webp" alt="">
+          <img class="frag" src="img/frag_0.webp" alt="" style="left:27.92%;top:26.27%;width:13.47%">
+          <img class="frag" src="img/frag_1.webp" alt="" style="left:52.36%;top:21.69%;width:10.69%">
+          <img class="frag" src="img/frag_2.webp" alt="" style="left:37.22%;top:44.24%;width:12.36%">
+          <img class="frag" src="img/frag_3.webp" alt="" style="left:58.89%;top:41.02%;width:13.19%">
+          <img class="frag" src="img/frag_4.webp" alt="" style="left:45.14%;top:56.02%;width:8.19%">
+          <img class="frag" src="img/frag_5.webp" alt="" style="left:25.14%;top:37.46%;width:13.61%">
+          <img class="frag" src="img/frag_6.webp" alt="" style="left:65.42%;top:31.86%;width:8.06%">
+          <img class="frag" src="img/frag_7.webp" alt="" style="left:47.08%;top:31.61%;width:11.53%">
+        </button>
+        <p class="hand egg-hint"><svg class="ic"><use href="#i-hand"/></svg><span id="eggHint">Жұмыртқаны басып көр!</span></p>
+      </div>
+      <div>
+        <ol class="steps">
+          <li><span class="badge green"><svg class="ic"><use href="#i-egg"/></svg></span>Қабықтарды жинадық</li>
+          <li><span class="badge green"><svg class="ic"><use href="#i-sun"/></svg></span>Кептірдік</li>
+          <li><span class="badge green"><svg class="ic"><use href="#i-mortar"/></svg></span>Ұнтақтадық</li>
+        </ol>
+        <div class="why">
+          <div class="ca" aria-label="Кальций, реттік нөмірі 20"><small>20</small><b>Ca</b><small>Кальций</small></div>
+          <div>
+            <p class="eyebrow">Неліктен жұмыртқа қабығы?</p>
+            <p class="why-main">Себебі оның құрамында өсімдікке қажетті кальций бар.</p>
+            <p class="muted">Біз оны топыраққа қосып, тәжірибе жасауды ұйғардық.</p>
+          </div>
+        </div>
+        <ul class="facts">
+          <li><svg class="ic"><use href="#i-check"/></svg>Қабық неғұрлым ұсақ болса, топырақпен соғұрлым тез әрекеттеседі.</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Ол тыңайтқышты толық алмастыра алмайды, сондықтан тәжірибемен тексереміз.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="paper sec" id="tazhiribe">
+  <div class="wrap">
+    <p class="eyebrow">03 · Тәжірибе</p>
+    <h2>Үш түрлі топырақ дайындадық</h2>
+    <div class="soils">
+      <article class="soil egg">
+        <span class="num">1</span>
+        <img src="img/cup1.jpg" alt="Қара топырақ пен ұнтақталған жұмыртқа қабығы салынған стақан" width="800" height="600" loading="lazy">
+        <h3>Қара топырақ + жұмыртқа қабығы</h3>
+        <p>Ұнтақталған қабық қосылған</p>
+      </article>
+      <article class="soil">
+        <span class="num">2</span>
+        <img src="img/cup2.jpg" alt="Қоспасыз қара топырақ салынған стақан" width="800" height="600" loading="lazy">
+        <h3>Қара топырақ</h3>
+        <p>Ешқандай қоспасыз</p>
+      </article>
+      <article class="soil">
+        <span class="num">3</span>
+        <img src="img/cup3.jpg" alt="Гүлге арналған құнарлы топырақ салынған стақан" width="800" height="600" loading="lazy">
+        <h3>Құнарлы топырақ</h3>
+        <p>Гүлге арналған</p>
+      </article>
+    </div>
+    <p class="seeded"><span class="badge red"><svg class="ic"><use href="#i-check"/></svg></span>Үш ыдысқа да бірдей гүл тұқымын ектік.</p>
+
+    <div class="guess" role="group" aria-labelledby="guessTitle">
+      <h3 id="guessTitle">Сенің болжамың: қай ыдыста гүл жақсы өседі?</h3>
+      <div class="choices">
+        <button class="choice" type="button" data-n="1" aria-pressed="false">1 · Қабық қосылған</button>
+        <button class="choice" type="button" data-n="2" aria-pressed="false">2 · Қара топырақ</button>
+        <button class="choice" type="button" data-n="3" aria-pressed="false">3 · Құнарлы топырақ</button>
+      </div>
+      <p class="guess-out" id="guessOut" aria-live="polite">Таңда да, көктемде тексер!</p>
+    </div>
+
+    <div class="pol-head">
+      <h3>Біз осылай ектік</h3>
+      <p class="hand">тәжірибе күні</p>
+    </div>
+    <ol class="polaroids">
+      <li class="polaroid" style="--rot:-3deg"><span class="step">1</span><img src="img/pol1.jpg" alt="Оқушы кассетаға топырақ салып жатыр" width="616" height="700" loading="lazy"><p class="cap hand">Топырақ салдық</p><p class="det">үш ыдысқа</p></li>
+      <li class="polaroid" style="--rot:2deg"><span class="step">2</span><img src="img/pol2.jpg" alt="Оқушы топыраққа қабық ұнтағын себуде" width="616" height="700" loading="lazy"><p class="cap hand">Қабық ұнтағын қостық</p><p class="det">1 л топыраққа 5 г</p></li>
+      <li class="polaroid" style="--rot:-1.5deg"><span class="step">3</span><img src="img/pol3.jpg" alt="Оқушы тұқымға ұя жасап жатыр" width="616" height="700" loading="lazy"><p class="cap hand">Тұқым ектік</p><p class="det">бірдей тереңдікке</p></li>
+      <li class="polaroid" style="--rot:3deg"><span class="step">4</span><img src="img/pol4.jpg" alt="Оқушы көшеттерді суарып жатыр" width="616" height="700" loading="lazy"><p class="cap hand">Бірдей суардық</p><p class="det">өлшеуіш ыдыспен</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="night sec" id="zhospar">
+  <div class="wrap">
+    <p class="eyebrow">04 · Алдағы жоспар</p>
+    <h2>Күн сайын бақылаймыз</h2>
+    <p class="lead muted">Біз күн сайын гүлдерімізді бақылап, оларға күтім жасаймыз. Мына сұрақтардың жауабын күнделікке жазып отырамыз:</p>
+    <div class="questions" style="margin-top:28px">
+      <article class="q"><span class="badge soft"><svg class="ic"><use href="#i-seedling"/></svg></span><h3>Қай тұқым бірінші өнеді?</h3></article>
+      <article class="q"><span class="badge soft"><svg class="ic"><use href="#i-ruler"/></svg></span><h3>Қай гүл тез өседі?</h3></article>
+      <article class="q"><span class="badge soft"><svg class="ic"><use href="#i-leaf"/></svg></span><h3>Жапырақтары қалай өзгереді?</h3></article>
+    </div>
+    <p class="compare"><span class="badge"><svg class="ic"><use href="#i-camera"/></svg></span>Өсімдіктердің өсуін суретке түсіріп, нәтижелерін салыстырамыз.</p>
+
+    <div class="year">
+      <h3>Жыл бойғы жұмысымыз</h3>
+      <ol class="timeline" id="timeline">
+        <li data-ym="2026-09"><time>Қыркүйек 2026</time><p>Тақырыпты таңдадық: қабық гүлдің өсуіне әсер ете ме?</p><span class="status"></span></li>
+        <li data-ym="2026-10"><time>Қазан 2026</time><p>Жұмыртқа қабығының құрамын зерттедік.</p><span class="status"></span></li>
+        <li data-ym="2026-11"><time>Қараша 2026</time><p>Ыдыстарды, үш топырақты, тұқымды дайындап, ектік.</p><span class="status"></span></li>
+        <li data-ym="2026-12"><time>Желтоқсан 2026</time><p>Биіктігін өлшеп, жапырақтарын санап, кестеге жазамыз.</p><span class="status"></span></li>
+        <li data-ym="2027-04"><time>Сәуір 2027</time><p>Өлшеулер мен суреттерді қайталаймыз.</p><span class="status"></span></li>
+        <li data-ym="2027-05"><time>Мамыр 2027</time><p>Көшеттерді мектеп ауласына отырғызамыз.</p><span class="status"></span></li>
+        <li data-ym="2027-09"><time>Қыркүйек 2027</time><p>Қорытынды жасап, гүлзардың макетін дайындаймыз.</p><span class="status"></span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="paper sec" id="suretter">
+  <div class="wrap">
+    <p class="eyebrow">05 · Суреттер</p>
+    <h2>Бірге жұмыс істедік</h2>
+    <div class="gallery" id="gallery">
+      <button class="wide tall" type="button" data-src="img/g1.jpg"><img src="img/g1.jpg" alt="Оқушылар ыдыстар мен топырақ дайындаған үстел жанында" loading="lazy"><span>Біздің команда</span></button>
+      <button class="tall" type="button" data-src="img/g2.jpg"><img src="img/g2.jpg" alt="Оқушы тамшуырмен су тамызып жатыр" loading="lazy"><span>Тамшуырмен суару</span></button>
+      <button class="tall" type="button" data-src="img/g3.jpg"><img src="img/g3.jpg" alt="Оқушы су құйылған бөтелке ұстап тұр" loading="lazy"><span>Суды өлшеу</span></button>
+      <button class="tall" type="button" data-src="img/g4.jpg"><img src="img/g4.jpg" alt="Оқушы гүл тұқымдарының пакеттері жанында" loading="lazy"><span>Гүл тұқымдары</span></button>
+      <button class="tall" type="button" data-src="img/g5.jpg"><img src="img/g5.jpg" alt="Оқушы кассетадағы топырақты тығыздап жатыр" loading="lazy"><span>Топырақты тығыздау</span></button>
+      <button class="tall" type="button" data-src="img/g6.jpg"><img src="img/g6.jpg" alt="Оқушы көшеттерді суарып жатыр" loading="lazy"><span>Суару</span></button>
+      <button class="tall" type="button" data-src="img/g7.jpg"><img src="img/g7.jpg" alt="Белгі жапсырылған үш ыдыс" loading="lazy"><span>Белгі қойылған ыдыстар</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="paper sec" id="natizhe">
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow">06 · Нәтиже</p>
+      <h2>Күтілетін нәтиже</h2>
+      <ul class="results">
+        <li><span class="badge green"><svg class="ic"><use href="#i-seedling"/></svg></span>Көктемде өсіп шыққан гүл көшеттерін мектеп ауласына отырғызамыз.</li>
+        <li><span class="badge pink"><svg class="ic"><use href="#i-leaf"/></svg></span>Мектеп ауласының гүлденуіне өз үлесімізді қосамыз.</li>
+      </ul>
+      <p class="hand quote">Табиғатты қорғау үлкен істерден емес, кішкентай қадамдардан басталады.</p>
+    </div>
+    <figure class="result-photo">
+      <img src="img/result.jpg" alt="Оқушылар мектеп ауласындағы хризантемалардың жанында" width="776" height="900" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<section class="finale" id="birge">
+  <div class="finale-bg" aria-hidden="true"></div>
+  <canvas class="petals" data-count="26" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="eyebrow">Бірге</p>
+    <p class="poem"><span>Табиғатты аялайық,</span><span>Гүлдерді біз баптайық!</span><span>Мектебіміз құлпырып,</span><span>Әсем гүлге орансын!</span></p>
+    <p class="hand thanks">Рақмет!</p>
+  </div>
+  <footer>
+    <div class="wrap">
+      <p>Әбдісәдір Даниял, Қасымбек Айасылым · жетекшісі Бердибаева К.Р.</p>
+      <p>«Зерде» зерттеу жобалары конкурсы · 2026–2027 оқу жылы</p>
+    </div>
+  </footer>
+</section>
+</main>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Фотосурет">
+  <button class="close" type="button" aria-label="Жабу"><svg class="ic"><use href="#i-close"/></svg></button>
+  <button class="prev" type="button" aria-label="Алдыңғы сурет"><svg class="ic"><use href="#i-left"/></svg></button>
+  <figure><img id="lbImg" src="" alt=""><figcaption class="hand" id="lbCap"></figcaption></figure>
+  <button class="next" type="button" aria-label="Келесі сурет"><svg class="ic"><use href="#i-right"/></svg></button>
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- floating petals ---------- */
+  var petalImgs = [0, 1, 2].map(function (i) { var im = new Image(); im.src = 'img/petal_' + i + '.webp'; return im; });
+  document.querySelectorAll('canvas.petals').forEach(function (cv) {
+    var ctx = cv.getContext('2d'), W = 0, H = 0, parts = [], running = false, last = 0;
+    var n = +cv.dataset.count || 18;
+    function size() {
+      var r = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
+      W = r.width; H = r.height; cv.width = Math.round(W * d); cv.height = Math.round(H * d); ctx.setTransform(d, 0, 0, d, 0, 0);
+    }
+    function spawn(p, anywhere) {
+      p.x = Math.random() * W; p.y = anywhere ? Math.random() * H : H + 50;
+      p.s = 9 + Math.random() * 15; p.v = 14 + Math.random() * 26; p.sw = Math.random() * 6.28;
+      p.r = Math.random() * 6.28; p.vr = (Math.random() - 0.5) * 1.4; p.img = petalImgs[(Math.random() * 3) | 0]; p.a = 0.3 + Math.random() * 0.5;
+    }
+    function paint(dt) {
+      ctx.clearRect(0, 0, W, H);
+      parts.forEach(function (p) {
+        p.y -= p.v * dt; p.sw += dt * 0.9; p.x += Math.sin(p.sw) * 14 * dt; p.r += p.vr * dt;
+        if (p.y < -60) spawn(p, false);
+        if (!p.img.complete || !p.img.naturalWidth) return;
+        ctx.save(); ctx.globalAlpha = p.a; ctx.translate(p.x, p.y); ctx.rotate(p.r);
+        ctx.drawImage(p.img, -p.s / 2, -p.s * 1.25, p.s, p.s * 2.5); ctx.restore();
+      });
+    }
+    function frame(t) { var dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t; paint(dt); if (running) requestAnimationFrame(frame); }
+    size(); for (var i = 0; i < n; i++) { var p = {}; spawn(p, true); parts.push(p); }
+    window.addEventListener('resize', size);
+    if (reduce) { petalImgs[2].onload = function () { paint(0); }; setTimeout(function () { paint(0); }, 400); return; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting && !running) { running = true; last = 0; requestAnimationFrame(frame); } else if (!e.isIntersecting) running = false; });
+      }).observe(cv);
+    } else { running = true; requestAnimationFrame(frame); }
+  });
+
+  /* ---------- egg: tap to crush into powder ---------- */
+  var FR = [{"ox": -77, "oy": -90, "dx": 0, "dy": 655, "r": -200, "t": 1000}, {"ox": 39, "oy": -135, "dx": -16, "dy": 684, "r": 240, "t": 1097}, {"ox": -33, "oy": -180, "dx": 8, "dy": 464, "r": -280, "t": 1194}, {"ox": 78, "oy": -90, "dx": -2, "dy": 510, "r": 320, "t": 1291}, {"ox": -4, "oy": -135, "dx": 6, "dy": 369, "r": -360, "t": 1068}, {"ox": -91, "oy": -180, "dx": -20, "dy": 579, "r": 400, "t": 1165}, {"ox": 98, "oy": -90, "dx": 20, "dy": 653, "r": -440, "t": 1262}, {"ox": 14, "oy": -135, "dx": 50, "dy": 587, "r": 480, "t": 1039}];
+  var stage = document.getElementById('egg'), hint = document.getElementById('eggHint');
+  var q = function (c) { return stage.querySelector('.' + c); };
+  var whole = q('whole'), crack = q('crack'), top = q('top'), bot = q('bot'), heap = q('heap'), shadow = q('shadow');
+  var frags = Array.prototype.slice.call(stage.querySelectorAll('.frag'));
+  var state = 'idle', timers = [];
+  function setFinal() {
+    whole.style.opacity = 0; crack.style.opacity = 0; top.style.opacity = 0; bot.style.opacity = 0; shadow.style.opacity = 0;
+    frags.forEach(function (f) { f.style.opacity = 0; }); heap.style.opacity = 1; heap.style.transform = 'none';
+  }
+  function reset() {
+    timers.forEach(clearTimeout); timers = [];
+    if (stage.getAnimations) stage.getAnimations({ subtree: true }).forEach(function (a) { a.cancel(); });
+    [whole, shadow].forEach(function (el) { el.style.opacity = 1; });
+    [crack, top, bot, heap].forEach(function (el) { el.style.opacity = 0; el.style.transform = ''; });
+    frags.forEach(function (f) { f.style.opacity = 0; });
+    hint.textContent = 'Жұмыртқаны басып көр!'; state = 'idle';
+  }
+  function run() {
+    if (state === 'busy') return;
+    if (state === 'done') { reset(); return; }
+    if (reduce || !whole.animate) { setFinal(); state = 'done'; hint.textContent = 'Міне, қабық ұнтағы! Қайта көру үшін бас.'; return; }
+    state = 'busy';
+    var u = stage.clientWidth / 720;
+    whole.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(5deg)' }, { transform: 'rotate(-5deg)' }, { transform: 'rotate(4deg)' }, { transform: 'rotate(-3deg)' }, { transform: 'rotate(0)' }], { duration: 750, easing: 'ease-in-out' });
+    crack.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, delay: 620, fill: 'forwards' });
+    timers.push(setTimeout(function () {
+      whole.style.opacity = 0; crack.getAnimations().forEach(function (a) { a.cancel(); }); crack.style.opacity = 0;
+      shadow.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: 'forwards' });
+      top.style.opacity = 1; bot.style.opacity = 1;
+      top.animate([{ transform: 'translate(0,0) rotate(0)' }, { transform: 'translate(' + (-120 * u) + 'px,' + (-130 * u) + 'px) rotate(-35deg)', offset: 0.35 },
+        { transform: 'translate(' + (-10 * u) + 'px,' + (330 * u) + 'px) rotate(-75deg)', opacity: 0 }], { duration: 1150, easing: 'cubic-bezier(.3,.1,.6,1)', fill: 'forwards' });
+      bot.animate([{ transform: 'translate(0,0) rotate(0)' }, { transform: 'translate(' + (30 * u) + 'px,' + (20 * u) + 'px) rotate(10deg)', offset: 0.3 },
+        { transform: 'translate(0px,' + (240 * u) + 'px) rotate(18deg)', opacity: 0 }], { duration: 1000, easing: 'cubic-bezier(.4,0,.8,.6)', fill: 'forwards' });
+      frags.forEach(function (f, i) {
+        var d = FR[i]; f.style.opacity = 1;
+        f.animate([{ transform: 'translate(0,0) rotate(0)', opacity: 1 },
+          { transform: 'translate(' + (d.ox * u) + 'px,' + (d.oy * u) + 'px) rotate(' + (d.r * 0.4) + 'deg)', offset: 0.38, opacity: 1 },
+          { transform: 'translate(' + (d.dx * u) + 'px,' + (d.dy * u) + 'px) rotate(' + d.r + 'deg)', opacity: 0 }],
+          { duration: d.t, easing: 'cubic-bezier(.35,.1,.75,1)', fill: 'forwards' });
+      });
+      heap.animate([{ opacity: 0, transform: 'scaleY(0.1)' }, { opacity: 1, transform: 'scaleY(1)' }], { duration: 900, delay: 500, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' });
+    }, 850));
+    timers.push(setTimeout(function () { state = 'done'; hint.textContent = 'Міне, қабық ұнтағы! Қайта көру үшін бас.'; }, 2500));
+  }
+  stage.addEventListener('click', run);
+
+  /* ---------- guess ---------- */
+  var out = document.getElementById('guessOut');
+  var names = { 1: 'қабық қосылған топырақты', 2: 'қара топырақты', 3: 'құнарлы топырақты' };
+  document.querySelectorAll('.choice').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.choice').forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      out.textContent = 'Сен ' + names[b.dataset.n] + ' таңдадың. Дұрыс па? Оны көктемде білеміз!';
+    });
+  });
+
+  /* ---------- year timeline: done / now / ahead ---------- */
+  var now = new Date(), cur = now.getFullYear() * 12 + now.getMonth();
+  document.querySelectorAll('#timeline li').forEach(function (li) {
+    var p = li.dataset.ym.split('-'), m = (+p[0]) * 12 + (+p[1] - 1);
+    var st = m < cur ? 'done' : (m === cur ? 'now' : 'ahead');
+    li.classList.add(st);
+    li.querySelector('.status').textContent = st === 'done' ? 'Жасалды' : (st === 'now' ? 'Қазір' : 'Алда');
+  });
+
+  /* ---------- gallery lightbox ---------- */
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
+  var items = Array.prototype.slice.call(document.querySelectorAll('#gallery button')), idx = 0, opener = null;
+  function show(i) {
+    idx = (i + items.length) % items.length; var b = items[idx], img = b.querySelector('img');
+    lbImg.src = b.dataset.src; lbImg.alt = img.alt; lbCap.textContent = b.querySelector('span').textContent;
+  }
+  items.forEach(function (b, i) { b.addEventListener('click', function () { opener = b; show(i); lb.hidden = false; lb.querySelector('.close').focus(); }); });
+  function close() { lb.hidden = true; if (opener) opener.focus(); }
+  lb.querySelector('.close').addEventListener('click', close);
+  lb.querySelector('.prev').addEventListener('click', function () { show(idx - 1); });
+  lb.querySelector('.next').addEventListener('click', function () { show(idx + 1); });
+  lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') show(idx - 1); else if (e.key === 'ArrowRight') show(idx + 1);
+  });
+})();
+</script>
+</body>
+</html>
